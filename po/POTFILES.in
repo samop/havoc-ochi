@@ -1,0 +1,9 @@
+src/ans_process.c
+src/bar_process.c
+src/daemon.c
+src/filesystem.c
+src/imageio.c
+src/img_process.c
+src/localization.c
+src/main.c
+src/sid_process.c

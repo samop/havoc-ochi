@@ -1,0 +1,107 @@
+# Slovenian translations for havoc package.
+# Copyright (C) 2011 Samo Penic, Miha Fosnaric, Ales Berkopec
+# This file is distributed under the same license as the havoc package.
+# Samo Penic <samo.penic@fe.uni-lj.si>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: havoc 0.1\n"
+"Report-Msgid-Bugs-To: samo.penic@fe.uni-lj.si\n"
+"POT-Creation-Date: 2011-02-18 14:35+0100\n"
+"PO-Revision-Date: 2011-02-18 14:36+0100\n"
+"Last-Translator: Samo Penic <samo.penic@fe.uni-lj.si>\n"
+"Language-Team: Slovenian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ASCII\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
+"%100==4 ? 2 : 3);\n"
+
+#: src/ans_process.c:141
+#, c-format
+msgid "UP: Found %i markers:\n"
+msgstr "ZGORAJ: Našel sem %i kvadratkov:\n"
+
+#: src/ans_process.c:143 src/ans_process.c:158
+#, c-format
+msgid "location %f, %f, %f, %f\n"
+msgstr "položaj %f, %f, %f, %f\n"
+
+#: src/ans_process.c:156
+#, c-format
+msgid "RIGHT: Found %i markers:\n"
+msgstr "DESNO: Našel sem %i kvadratkov:\n"
+
+#: src/bar_process.c:46
+msgid "tryig another way\n"
+msgstr "Poskusil bom še drugače\n"
+
+#: src/filesystem.c:68
+#, c-format
+msgid "Config dir in: %s\n"
+msgstr "Nastavive so v: %s\n"
+
+#: src/main.c:52
+#, c-format
+msgid ""
+"%s version %s\n"
+"\n"
+msgstr ""
+"%s različica %s\n"
+"\n"
+
+#: src/main.c:54
+#, c-format
+msgid ""
+"Copyright (C) %s Samo Penic, Miha Fosnaric, Ales Berkopec\n"
+"Published under GNU GPL version 3 or later <http://gnu.org/licenses/gpl."
+"html>\n"
+"This is free software: you are free to change and redistribute it.\n"
+"There is NO WARRANTY, to the extent permitted by law.\n"
+msgstr ""
+
+#: src/main.c:75
+#, c-format
+msgid "No files in current directory... Exiting...\n"
+msgstr "V trenutni mapi ni datotek... Prekinjam izvajanje...\n"
+
+#: src/main.c:79
+#, c-format
+msgid "file: %s\n"
+msgstr "datoteka: %s\n"
+
+#: src/main.c:82
+#, c-format
+msgid "Pix error... Exiting...\n"
+msgstr "Napaka v sliki... Prekinjam izvajanje...\n"
+
+#: src/main.c:90
+msgid "no barcode\n"
+msgstr "ni črtne kode\n"
+
+#: src/main.c:100
+msgid "Code was not decoded... trying again\n"
+msgstr "Črtna koda ni bila razpoznana... Poskusil bom ponovno\n"
+
+#: src/main.c:109
+#, c-format
+msgid "Barcode number of file is %s.\n"
+msgstr "Črtna koda datoteke je %s.\n"
+
+#: src/main.c:110
+#, c-format
+msgid "Student id number of file is %s.\n"
+msgstr "Vpisna številka datoteke je %s.\n"
+
+#: src/main.c:111
+msgid "Certainty:"
+msgstr "Zanesljivost:"
+
+#: src/sid_process.c:43
+#, c-format
+msgid "SID not recognised (%s), doing different processing and trying again!\n"
+msgstr "Vpisna številka ni razpoznana (%s), poskusil bom še drug tip algoritma!\n"
+
+#: src/sid_process.c:84
+msgid "Going int XY correction mode!\n"
+msgstr "Vklapljam XY popravek!\n"

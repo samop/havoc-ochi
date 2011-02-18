@@ -1,0 +1,52 @@
+ochi (0.01-Daily7) lucid; urgency=low
+
+  * Daily build. Bug fixed..
+
+ -- Samo Penic <samo.penic@fe.uni-lj.si>  Tue, 15 Feb 2011 19:10:45 +0100
+
+ochi (0.01-Daily6) lucid; urgency=low
+
+  * Daily build. First functional version that could potentially change the old
+    code!
+
+ -- Samo Penic <samo.penic@fe.uni-lj.si>  Sun, 13 Feb 2011 18:10:45 +0100
+
+ochi (0.01-Daily5) lucid; urgency=low
+
+  * Daily build. Compability with tiff - 8 and improved zbar code read.
+
+ -- Samo Penic <samo.penic@fe.uni-lj.si>  Sat, 12 Feb 2011 20:30:11 +0100
+
+ochi (0.01-Daily4) lucid; urgency=low
+
+  * Daily build. All basic features programmed. Only 1 leak, answers are not
+    detected yet.
+
+ -- Samo Penic <samo.penic@fe.uni-lj.si>  Sat, 12 Feb 2011 20:30:11 +0100
+
+ochi (0.01-Daily3) lucid; urgency=low
+
+  * Daily build. Added share files. Parsed information is used to output
+    debug images. ans_process.c is built, but not changed from previous
+    version.
+
+ -- Samo Penic <samo.penic@fe.uni-lj.si>  Tue, 09 Feb 2011 21:06:49 +0100
+
+ochi (0.01-Daily2) lucid; urgency=low
+
+  * Daily build. Added configuration file. File is parseed, but the info not
+    used yet
+
+ -- Samo Penic <samo.penic@fe.uni-lj.si>  Tue, 09 Feb 2011 21:06:49 +0100
+
+ochi (0.01-Daily1) lucid; urgency=low
+
+  * Daily build.
+
+ -- Samo Penic <samo.penic@fe.uni-lj.si>  Tue, 08 Feb 2011 18:44:49 +0100
+
+ochi (0.01) lucid; urgency=low
+
+  * Initial Release.
+
+ -- Samo Penic <samo.penic@fe.uni-lj.si>  Mon, 07 Feb 2011 14:58:49 +0100

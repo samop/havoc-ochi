@@ -1,0 +1,45 @@
+This package contains the Ochi source package -- a part of HAvOc.
+
+See the file INSTALL for generic compilation and installation instructions.
+
+See the section FAQ in the documentation (doc/faq.txt) for
+frequently asked questions.  
+
+Compilation of the source requires leptonica and zbar.  More on installation and
+compilation in INSTALLATION.
+
+Please send bug reports to <samo.penic@fe.uni-lj.si>.  Please include the
+version number, and a complete, self-contained test case in each bug report.
+
+If you have questions about using Ochi and the documentation does
+not answer them, please send mail to <samo.penc@fe.uni-lj.si>.
+
+
+Translations:
+For translations GNU project gettext should be used.
+brief procedure:
+xgettext -d ochi -s -o ochi.pot main.c
+msginit -l sl_SI -o slovenian.po -i ochi.pot
+(edit file slovenian.po)
+msgfmt -c -v -o ochi.mo slovenian.po
+
+Then set locale: export LC_ALL=sl_SI.utf8
+and run the program.
+-----
+
+Copyright (C) 2011 Samo Penic, Miha Fosnaric, Ales Berkopec.
+
+This file is part of Ochi, the optical recognition backend of HAvOc.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.

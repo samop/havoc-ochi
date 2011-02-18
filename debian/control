@@ -1,0 +1,26 @@
+Source: ochi
+Section: devel
+Priority: extra
+Maintainer: Samo Penic <samo.penic@fe.uni-lj.si>
+Build-Depends: debhelper (>= 7), autotools-dev, libleptonica-dev, libtiff4-dev, libpng12-dev, libzbar-dev, libconfuse-dev
+Standards-Version: 3.8.3
+Homepage: http://torina.fe.uni-lj.si/~samop/
+
+Package: ochi
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Provides: ochi
+Replaces: ochi
+Description: Optical recognition backend for HAvOc
+ HAvOc (slovenian: Hrabri Avtomatsko Ocenjujejo, english: brave do student
+ grading automatically) is a system for automatic grading of written examination
+ forms. The system is contepted in such a way that each student gets multiple
+ choice answer sheet, where each sheet is unique in terms of numerical data and
+ the correct answer is calculated from this data using formula. The position of
+ right answers is also randomized. Solved answer sheet are scanned using fast
+ document scanners and the student id, answers and sheet id is determined using
+ OCR. Data is inserted into database for corrections, grading and publishing on
+ the net, where each student gets its own work graded, with correct answers
+ marked.
+ .
+ This package provides OCR backend of the project.
