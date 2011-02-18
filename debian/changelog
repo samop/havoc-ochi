@@ -1,3 +1,13 @@
+ochi (0.01-RC1) lucid; urgency=low
+
+  * Release candidate
+  * Major bug fixes
+  * Localization and internationalization on the way... Slovenian translation
+    ready but gettext not yet tested with sl_SI.utf8 locale
+  * Daemonization in progres.
+
+ -- Samo Penic <samo.penic@fe.uni-lj.si>  Tue, 15 Feb 2011 19:10:45 +0100
+
 ochi (0.01-Daily7) lucid; urgency=low
 
   * Daily build. Bug fixed..
