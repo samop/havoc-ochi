@@ -34,5 +34,7 @@ AC_FUNC_MALLOC
 AC_CONFIG_FILES([Makefile
                 src/Makefile
                 src/ocrlib/Makefile
+                share/Makefile
+                etc/Makefile
                 po/Makefile.in])
 AC_OUTPUT
