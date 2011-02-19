@@ -101,11 +101,14 @@ int process_scans(){
             barkoda=getCode(pixs);
         }
 /* SID is only on the first page. Inhibit SID recognition on subsequent pages */
-        if(barkoda->barcode[7]!='0'){
+        if(barkoda->barcode[7]=='0'){
         vpisna=getSID(pixs);
         }
-        else vpisna->sid="xxxxxxxx";
-
+        else
+        {
+        vpisna->sid=malloc((SID_LENGTH+1)*sizeof(char));
+         vpisna->sid="xxxxxxxx";
+        }
         dfprintf(stdout,_("Barcode number of file is %s.\n"),barkoda->barcode);
         dfprintf(stdout,_("Student id number of file is %s.\n"),vpisna->sid);
         dfprintf(stdout,_("Certainty:"));
