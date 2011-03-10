@@ -68,15 +68,15 @@ void test_db_connection(){
 }
 
 
-int db_insert_wrapper(char *filename, ANS *ans, BAR *barkoda, SID *vpisna){
-	PGconn     *conn;
+int db_insert_wrapper(PGconn *conn, char *filename, ANS *ans, BAR *barkoda, SID *vpisna){
     PGresult   *res;
-    conn = connect_db();
     int retval;
-	if (PQstatus(conn) != CONNECTION_OK) return 1; /* if cannot connect */
-    
-    if (db_check_serial_validity(conn,barkoda->barcode)==0) { close_db(conn); return 1;}
-    if (db_check_scan_presence(conn,barkoda->barcode)==1) { close_db(conn); return 1;} 
+/*	PGconn     *conn;
+    conn = connect_db();
+	if (PQstatus(conn) != CONNECTION_OK) return 1; // if cannot connect 
+  */  
+    if (db_check_serial_validity(conn,barkoda->barcode)==0) { return 1;}
+    if (db_check_scan_presence(conn,barkoda->barcode)==1) { return 1;} 
     char *ansarray=ans_array(ans);
     char *picname=picfname(filename);
     retval= db_insert_scan(conn, barkoda->barcode, ans->ans_string, "REZ",ansarray,vpisna->sid, picname);
@@ -84,7 +84,7 @@ int db_insert_wrapper(char *filename, ANS *ans, BAR *barkoda, SID *vpisna){
     PQclear(res);
     free(ansarray);
     free(picname);
-    close_db(conn);
+//    close_db(conn);
     return retval;
 }
 
@@ -93,8 +93,8 @@ int db_insert_wrapper(char *filename, ANS *ans, BAR *barkoda, SID *vpisna){
 int db_check_serial_validity(PGconn *conn, char *bar){
     PGresult   *res;
     char *query=malloc(1024*sizeof(char));
-
-    sprintf(query,"SELECT ser_st FROM resitve where ser_st='%s';",bar);
+// TODO: Think about including leading zero. +1 cancels it.
+    sprintf(query,"SELECT ser_st FROM resitve where ser_st='%s';",bar+1);
     res = PQexec(conn, query);
     free(query);
     if (PQresultStatus(res) != PGRES_TUPLES_OK){
@@ -116,8 +116,8 @@ int db_check_serial_validity(PGconn *conn, char *bar){
 int db_check_scan_presence(PGconn *conn, char *bar){
     PGresult   *res;
     char *query=malloc(1024*sizeof(char));
-
-    sprintf(query,"SELECT ser_st FROM pola where ser_st='%s';",bar);
+// TODO: Think about including leading zero. +1 cancels it.
+    sprintf(query,"SELECT ser_st FROM pola where ser_st='%s';",bar+1);
     res = PQexec(conn, query);
     free(query);
     if (PQresultStatus(res) != PGRES_TUPLES_OK){
@@ -144,7 +144,8 @@ int db_insert_scan(PGconn *conn, char *barcode, char *answerstring, char *debug,
         printf("db_insert_scan: error in calling db_insert_blob. Scan will not be inserted!\n");
         return 1;
     }
-    sprintf(query,"INSERT INTO pola (student_id, sken_filename, odgovori, debug, ser_st, image, first_ser_st, page_no, coords, ocena, procenti) VALUES ('%s', '%s', '%s','%s','%s','%d','%s',%d,'%s',%d,%d);",sid, filename, answerstring, debug ,barcode, blobId, first_ser, bar_get_page_no(barcode), coords, -1, -1);
+// TODO: Think about including leading zero!!! +1 cancel it.
+    sprintf(query,"INSERT INTO pola (student_id, sken_filename, odgovori, debug, ser_st, image, first_ser_st, page_no, coords, ocena, procenti) VALUES ('%s', '%s', '%s','%s','%s','%d','%s',%d,'%s',%d,%d);",sid, filename, answerstring, debug ,barcode+1, blobId, first_ser+1, bar_get_page_no(barcode), coords, -1, -1);
     free(first_ser);
     res=PQexec(conn,query);
     if (PQresultStatus(res) != PGRES_COMMAND_OK){

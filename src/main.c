@@ -66,7 +66,7 @@ There is NO WARRANTY, to the extent permitted by law.\n\n\n"),
 
 
 int process_scans(){
-  PIX *pixs=NULL, *pixd=NULL;
+    PIX *pixs=NULL, *pixd=NULL;
     int i,j;
     BAR *barkoda=NULL;
     SID *vpisna=NULL;
@@ -79,6 +79,13 @@ int process_scans(){
         fprintf(stderr,_("No files in current directory... Exiting...\n"));
         exit(1);
     }
+
+/* connect to database */
+	PGconn     *conn;
+    conn = connect_db();
+	if (PQstatus(conn) != CONNECTION_OK) return 1; // if cannot connect 
+
+
     for(i=0;i<flist->gl_pathc;i++){
 	    fprintf(stdout,_("file: %s\n"),flist->gl_pathv[i]);
         pixs=loadimage(flist->gl_pathv[i]);
@@ -126,7 +133,7 @@ int process_scans(){
         writerezfile(pixd, flist->gl_pathv[i], answer, barkoda, vpisna);
 
 /* insert into database */
-        db_insert_wrapper(flist->gl_pathv[i], answer, barkoda, vpisna);
+        db_insert_wrapper(conn,flist->gl_pathv[i], answer, barkoda, vpisna);
 
 /* destroy all allocated space (hopefully) */
         ansDestroy(&answer);
@@ -135,6 +142,8 @@ int process_scans(){
         pixDestroy(&pixs);
         pixDestroy(&pixd);
     }
+
+    close_db(conn); /* close connection to database */
     globfree(flist);
     free(flist);
 }
