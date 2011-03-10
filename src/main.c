@@ -30,6 +30,7 @@
 #include "localization.h"
 #include "daemon.h"
 #include "../config.h"
+#include "database.h"
 
 PIX* sidbox(PIX *pixs);
 
@@ -44,6 +45,7 @@ void main(int    argc, char **argv) {
 /* Localization settings */
     set_localization("");
 
+    test_db_connection();
     process_scans();
 }
 /* Print version and copyright information.  */
