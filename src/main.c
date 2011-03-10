@@ -38,6 +38,7 @@ PIX* locatesid2(PIX *pixs);
 int process_scans();
 static void print_version (void);
 
+/* Entry to the program */
 void main(int    argc, char **argv) {
     print_version();
 /* Read config file */
@@ -48,8 +49,9 @@ void main(int    argc, char **argv) {
     test_db_connection();
     process_scans();
 }
-/* Print version and copyright information.  */
 
+
+/* Print version and copyright information.  */
 static void print_version (void) {
   fprintf (stdout,_("%s version %s\n\n"), PACKAGE, VERSION);
   
@@ -57,7 +59,7 @@ static void print_version (void) {
 Copyright (C) %s Samo Penic, Miha Fosnaric, Ales Berkopec\n\
 Published under GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>\n\
 This is free software: you are free to change and redistribute it.\n\
-There is NO WARRANTY, to the extent permitted by law.\n"),
+There is NO WARRANTY, to the extent permitted by law.\n\n\n"),
               "2008--2011");
 }
 
@@ -120,8 +122,12 @@ int process_scans(){
         dfprintf(stdout,".\n");
         ANS *answer=getanswer(pixs);
         
-/* save result file */
+/* save result file for legacy database insert */
         writerezfile(pixd, flist->gl_pathv[i], answer, barkoda, vpisna);
+
+/* insert into database */
+        db_insert_wrapper(flist->gl_pathv[i], answer, barkoda, vpisna);
+
 /* destroy all allocated space (hopefully) */
         ansDestroy(&answer);
         sidDestroy(&vpisna);

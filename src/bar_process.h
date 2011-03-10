@@ -44,4 +44,7 @@ void decodeCode(BAR *code);
 void img2yuv800(PIX *pixs, void **yuv);
 PIX *yuv8002img(uint8_t *yuv800, int w, int h);
 void barDestroy(BAR **barcode);
+int bar_get_page_no(char *barstring);
+char *bar_get_first_code(char *barstring);
+int ean13_check_digit(char *bs);
 #endif

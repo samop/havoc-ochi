@@ -70,6 +70,7 @@ int writerezfile(PIX *pixs,char *source_fname,ANS *ans, BAR *bar, SID *sid){
     char picfname[1024];
     char *base=calloc(1024,sizeof(char));
     char *ridx=rindex(source_fname,'.');
+    char *ansarray;
  
     base=strncpy(base, source_fname,ridx-source_fname);
     char *picname=rindex(base,'/');
@@ -97,7 +98,7 @@ int writerezfile(PIX *pixs,char *source_fname,ANS *ans, BAR *bar, SID *sid){
     fprintf(fh,"%d\n",(int)(mincert*100));
     fprintf(fh,"A\n");
     
-    fprintf(fh,"x=array(");
+/*    fprintf(fh,"x=array(");
     for(i=0;i<ans->up->n-1;i++){
         fprintf(fh,"%f,",ans->up->mark[i].x);
     }
@@ -106,7 +107,11 @@ int writerezfile(PIX *pixs,char *source_fname,ANS *ans, BAR *bar, SID *sid){
     for(i=0;i<ans->right->n-1;i++){
         fprintf(fh,"%f,",ans->right->mark[i].y);
     }
-    fprintf(fh,"%f);\n",ans->right->mark[i].y);
+    fprintf(fh,"%f);\n",ans->right->mark[i].y); */
+    
+    ansarray=ans_array(ans);
+    fprintf(fh,"%s\n",ansarray);
+    free(ansarray);
     fclose(fh);
 //rescale image
     PIX *pixd=pixScale(pixs, (float)1280/pixGetWidth(pixs),(float)1280/pixGetWidth(pixs));
@@ -122,4 +127,34 @@ int writerezfile(PIX *pixs,char *source_fname,ANS *ans, BAR *bar, SID *sid){
     free(base);
 
     return 0;
+}
+
+
+char *ans_array(ANS *ans){
+    int i;
+    char *str=malloc(10000*sizeof(str));
+    sprintf(str,"x=array(");
+    for(i=0;i<ans->up->n-1;i++){
+        sprintf(str,"%s%f,",str,ans->up->mark[i].x);
+    }
+    sprintf(str,"%s%f);",str,ans->up->mark[i].x);
+    sprintf(str,"%s y=array(",str);
+    for(i=0;i<ans->right->n-1;i++){
+        sprintf(str,"%s%f,",str,ans->right->mark[i].y);
+    }
+    sprintf(str,"%s%f);",str,ans->right->mark[i].y);
+    return str;
+}
+
+char *picfname(char *source_fname){
+    char *picfname=malloc(1024*sizeof(char));
+    char *base=calloc(1024,sizeof(char));
+    char *ridx=rindex(source_fname,'.');
+
+    base=strncpy(base, source_fname,ridx-source_fname);
+    char *picname=rindex(base,'/');
+
+    sprintf(picfname,"%s/%s.png",output_dir,picname);
+    free(base);
+    return picfname;
 }

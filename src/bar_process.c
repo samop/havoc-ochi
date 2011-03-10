@@ -183,3 +183,27 @@ void barDestroy(BAR **barcode){
 
 
 }
+
+int bar_get_page_no(char *barstring){ 
+    return barstring[7]-'0'+1;
+}
+
+
+char *bar_get_first_code(char *barstring){
+    char *firstcode=malloc(14*sizeof(char));
+    firstcode=strcpy(firstcode, barstring);
+    firstcode[7]='0';
+    firstcode[12]='0'+ean13_check_digit(firstcode);
+    return firstcode;
+}
+
+
+int ean13_check_digit(char *bs){
+    int even;
+    int odd;
+    int total;
+    even=bs[1]+bs[3]+bs[5]+bs[7]+bs[9]+bs[11]-6*'0';
+    odd=bs[0]+bs[2]+bs[4]+bs[6]+bs[8]+bs[10]-6*'0';
+    total=even*3+odd; 
+    return 10-total%10;
+}
