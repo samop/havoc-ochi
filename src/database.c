@@ -154,6 +154,7 @@ int db_insert_scan(PGconn *conn, char *barcode, char *answerstring, char *debug,
         return 1;
     }
     PQclear(res);
+    free(query);
     return 0;  
 }
 

@@ -284,6 +284,8 @@ void pixRemoveStub(PIX **pixt0b){
     SEL *sel = selCreateFromString(textsel1, 3, 3, "textsel1");
     PIX *pixhmt = pixErode(NULL, pixs, sel);
     saveimage(pixhmt,"/tmp/seltest.png");
+    selDestroy(&sel);
+    pixDestroy(&pixhmt);
     
 }
 

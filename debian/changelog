@@ -1,3 +1,11 @@
+ochi (0.01-RC1Maverick-fix1) maverick; urgency=low
+
+  - Segfault fixed
+  * Added interface to database.
+  * Added dependencies in deb package to lipq-dev.
+
+ -- Samo Penic <samo.penic@fe.uni-lj.si>  Tue, 10 Mar 2011 17:52:00 +0100
+
 ochi (0.01-RC1) lucid; urgency=low
 
   * Release candidate

@@ -2,7 +2,7 @@ Source: ochi
 Section: devel
 Priority: extra
 Maintainer: Samo Penic <samo.penic@fe.uni-lj.si>
-Build-Depends: debhelper (>= 7), autotools-dev, libleptonica-dev, libtiff4-dev, libpng12-dev, libzbar-dev, libconfuse-dev
+Build-Depends: debhelper (>= 7), autotools-dev, libleptonica-dev, libtiff4-dev, libpng12-dev, libzbar-dev, libconfuse-dev, libpq-dev
 Standards-Version: 3.8.3
 Homepage: http://torina.fe.uni-lj.si/~samop/
 
