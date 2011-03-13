@@ -20,6 +20,12 @@ set -e
 
 case "$1" in
     configure)
+	mkdir /home/havoc/input_scans
+	mkdir /home/havoc/processed_scans
+	mkdir /home/havoc/ocr_results
+	chown havoc.havoc /home/havoc/input_scans
+	chown havoc.havoc /home/havoc/processed_scans
+	chown havoc.havoc /home/havoc/ocr_results
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
