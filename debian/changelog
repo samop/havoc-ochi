@@ -1,3 +1,17 @@
+ochi (0.01-RC1-fix3) lucid; urgency=low
+
+  - Fix bad previous fix!
+
+ -- Samo Penic <samo.penic@fe.uni-lj.si>  Tue, 24 Mar 2011 10:40:00 +0100
+
+ochi (0.01-RC1-fix2) lucid; urgency=low
+
+  - Fix in calculation of ean13 checkdigit (if 0 then : was returned)
+  - If certainty of 0.85 is returned, the recognition is considered to be with
+    "warning".
+
+ -- Samo Penic <samo.penic@fe.uni-lj.si>  Tue, 24 Mar 2011 10:40:00 +0100
+
 ochi (0.01-RC1Maverick-fix1) maverick; urgency=low
 
   - Segfault fixed

@@ -205,5 +205,5 @@ int ean13_check_digit(char *bs){
     even=bs[1]+bs[3]+bs[5]+bs[7]+bs[9]+bs[11]-6*'0';
     odd=bs[0]+bs[2]+bs[4]+bs[6]+bs[8]+bs[10]-6*'0';
     total=even*3+odd; 
-    return 10-total%10;
+    return total%10 ? 10-total%10 : 0; /* this fixes bug when : is returned instead of 0 ! */
 }
