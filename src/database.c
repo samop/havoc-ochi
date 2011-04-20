@@ -37,7 +37,7 @@ PGconn *connect_db(){
 	conn = PQconnectdb(conninfo);
 	if (PQstatus(conn) != CONNECTION_OK)
         {
-                printf("Connection to database failed: %s\n",
+                dfprintf(stderr,"Connection to database failed: %s\n",
                         PQerrorMessage(conn));
         }
     return conn;
@@ -55,13 +55,13 @@ void test_db_connection(){
 	conn = connect_db();
 	if (PQstatus(conn) != CONNECTION_OK)
         {
-                printf("Connection to database failed: %s\n",
+                dfprintf(stderr,"Connection to database failed: %s\n",
                         PQerrorMessage(conn));
                 close_db(conn);
                 exit(1);
         }
     else {
-        printf("Connection to database successful!\n");
+        dfprintf(stderr,"Connection to database successful!\n");
     }
 
     close_db(conn);
@@ -109,7 +109,7 @@ int db_check_serial_validity(PGconn *conn, char *bar){
     res = PQexec(conn, query);
     free(query);
     if (PQresultStatus(res) != PGRES_TUPLES_OK){
-        printf("Checking for serial number in database failed: %s\n", PQerrorMessage(conn));
+        dfprintf(stderr,"Checking for serial number in database failed: %s\n", PQerrorMessage(conn));
         PQclear(res);
         return 0;
     }
@@ -132,7 +132,7 @@ int db_check_scan_presence(PGconn *conn, char *bar){
     res = PQexec(conn, query);
     free(query);
     if (PQresultStatus(res) != PGRES_TUPLES_OK){
-        printf("Checking for already present scan in database failed: %s\n", PQerrorMessage(conn));
+        dfprintf(stderr,"Checking for already present scan in database failed: %s\n", PQerrorMessage(conn));
         PQclear(res);
         return 1;
     }
@@ -152,7 +152,7 @@ int db_insert_scan(PGconn *conn, char *barcode, char *answerstring, char *debug,
     char *first_ser=bar_get_first_code(barcode);
     Oid blobId=db_insert_blob(conn,filename);
     if(blobId==0){
-        printf("db_insert_scan: error in calling db_insert_blob. Scan will not be inserted!\n");
+        dfprintf(stderr,"db_insert_scan: error in calling db_insert_blob. Scan will not be inserted!\n");
         return 1;
     }
 // TODO: Think about including leading zero!!! +1 cancel it.
@@ -160,7 +160,7 @@ int db_insert_scan(PGconn *conn, char *barcode, char *answerstring, char *debug,
     free(first_ser);
     res=PQexec(conn,query);
     if (PQresultStatus(res) != PGRES_COMMAND_OK){
-        printf("db_insert_scan error: %s\n", PQerrorMessage(conn));
+        dfprintf(stderr,"db_insert_scan error: %s\n", PQerrorMessage(conn));
         PQclear(res);
         return 1;
     }
@@ -177,7 +177,7 @@ Oid db_insert_blob(PGconn *conn, char *filename){
     int nbytes, tmp;
     fd = open(filename, O_RDONLY, 0666);
     if (fd < 0){                           /* error */
-        printf("db_insert_blob: can't open file %s\n", filename);
+        dfprintf(stderr,"db_insert_blob: can't open file %s\n", filename);
         return 0;
     }
     res = PQexec(conn, "begin"); /* blob operations must be in begin-end block */
@@ -185,7 +185,7 @@ Oid db_insert_blob(PGconn *conn, char *filename){
 
     blobId = lo_creat(conn, INV_READ | INV_WRITE);
     if (blobId == 0){
-        fprintf(stderr, "db_insert_blob: can't create large object\n");
+        dfprintf(stderr, "db_insert_blob: can't create large object\n");
         return 0;
     }
 
@@ -196,7 +196,7 @@ Oid db_insert_blob(PGconn *conn, char *filename){
     while ((nbytes = read(fd, buf, 1024)) > 0){
         tmp = lo_write(conn, lobj_fd, buf, nbytes);
         if (tmp < nbytes)
-            fprintf(stderr, "db_insert_blob: error while reading large object %d != %d\n", tmp,nbytes);
+            dfprintf(stderr, "db_insert_blob: error while reading large object %d != %d\n", tmp,nbytes);
     }
 
 

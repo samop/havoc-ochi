@@ -74,7 +74,7 @@ void readconfig(){
         CFG_SIMPLE_STR("debug_output", &debug_dir),
         CFG_SIMPLE_STR("result_output",&output_dir),
         CFG_SIMPLE_BOOL("debug",&debug),
-        CFG_SIMPLE_BOOL("quiet",&quiet),
+        CFG_SIMPLE_BOOL("daemon",&daemon_flag),
         CFG_END()
     };
     cfg_t *cfg;    
@@ -82,11 +82,11 @@ void readconfig(){
     cfg = cfg_init(opts, 0);
     retval=cfg_parse(cfg, conffile);
     if(retval==CFG_FILE_ERROR){
-        fprintf(stderr, "No config file.\n");
+        dfprintf(stderr, "No config file.\n");
         exit(1);
         }
     else if(retval==CFG_PARSE_ERROR){
-        fprintf(stderr,"Invalid config file!\n");
+        dfprintf(stderr,"Invalid config file!\n");
         exit(1);
         }
     cfg_free(cfg);
@@ -95,7 +95,7 @@ void readconfig(){
     sprintf(mark1filename,"%s/square.png",DATADIR);
     PIXmark1=loadimage(mark1filename);
     if(PIXmark1==NULL){
-        fprintf(stderr,"Error, cannot find marker file!\n");
+        dfprintf(stderr,"Error, cannot find marker file!\n");
         exit(1);
         }
 

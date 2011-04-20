@@ -22,6 +22,15 @@
 #include<stdarg.h>
 #include<stdlib.h>
 #include<stdio.h>
-int quiet;
+extern int daemon_flag;
 int dfprintf(FILE *fd, char *fmt, ...);
+void signal_handler(int sig);
+int daemonize();
+int lock_file();
+int process_scans();
+void print_version (void);
+void print_usage (void);
+
+
+
 #endif

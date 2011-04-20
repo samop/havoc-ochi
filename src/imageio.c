@@ -42,7 +42,7 @@ PIX *loadimage(char *filename){
         // pixReadHeader(filename, format,NULL,NULL,NULL,bpp,NULL);
     if(format!=IFF_PNG && format!=IFF_JFIF_JPEG && format!=IFF_TIFF && format!=
 IFF_GIF && format!=7 && format!=8){
-        printf("Not recognised file format %i", format);
+        dfprintf(stderr,"Not recognised file format %i", format);
         return NULL;
     }
     if ((pix = pixRead(filename)) == NULL) return NULL;
@@ -121,7 +121,7 @@ int writerezfile(PIX *pixs,char *source_fname,ANS *ans, BAR *bar, SID *sid){
     sprintf(fname,"%s/%s.tif",processed_dir,picname);
     int retval=rename(source_fname, fname);
     if(retval<0){
-    printf("rename not successful!\n");
+    dfprintf(stderr,"rename not successful!\n");
     }
 
     free(base);

@@ -1,4 +1,4 @@
-/* EDIT: Explain what this source file does
+/* daemon.c: Daemonize ochi process
    Copyright (C) 2011 Samo Penic, Miha Fosnaric, Ales Berkopec.
 
    This file is part of Ochi, an optical recognition backend of HAvOc.
@@ -18,14 +18,275 @@
 
 
 #include "daemon.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <unistd.h>
+#include <syslog.h>
+#include <string.h>
+#include <signal.h>
+
+
+#include <leptonica/allheaders.h>
+#include "imageio.h"
+#include "img_process.h"
+#include "sid_process.h"
+#include "bar_process.h"
+#include "ans_process.h"
+#include <filesystem.h>
+#include <localization.h>
+#include "daemon.h"
+#include "../config.h"
+#include "database.h"
+
+int daemon_flag=0;
+
 
 /* outputs string depending on quiet mode */
 int dfprintf(FILE *fd, char *fmt, ...){
-if(quiet) return 0;
     va_list ap;
     va_start(ap,fmt);
-vfprintf(fd, fmt, ap); /* Call vfprintf */
-va_end(ap); /* Cleanup the va_list */
-return 0;
+if(daemon_flag) {
+    syslog(LOG_INFO,fmt,ap);
+    va_end(ap); /* Cleanup the va_list */
+    return 0;
 }
+    vfprintf(fd, fmt, ap); /* Call vfprintf */
+    va_end(ap); /* Cleanup the va_list */
+    return 0;
+}
+
+
+
+void signal_handler(int sig) {
+ 
+    switch(sig) {
+        case SIGHUP:
+            syslog(LOG_WARNING, "Received SIGHUP signal.");
+            break;
+        case SIGTERM:
+            syslog(LOG_WARNING, "Received SIGTERM signal.");
+            exit(1);
+            break;
+        case SIGKILL:
+            syslog(LOG_WARNING, "Received SIGKILL signal.");
+            exit(1);
+            break;
+        default:
+            syslog(LOG_WARNING, "Unhandled signal (%d) %s",sig, strsignal(sig));
+            break;
+    }
+}
+
+
+
+
+int daemonize(){
+    signal(SIGHUP, signal_handler);
+    signal(SIGKILL, signal_handler);
+    signal(SIGTERM, signal_handler);
+    signal(SIGINT, signal_handler);
+    signal(SIGQUIT, signal_handler);
+
+  
+    // Our process ID and Session ID
+    pid_t pid, sid;
+    /* Fork the parent process */
+    pid = fork();
+    if (pid < 0) {
+            exit(EXIT_FAILURE);
+    }
+    // If we got a good PID, then we can exit the parent process.
+    if (pid > 0) {
+            exit(EXIT_SUCCESS);
+    }
+
+    /* Change the file mode mask */
+    umask(0);
+
+    openlog("havoc-ochi", LOG_PID|LOG_CONS, LOG_DAEMON);
+    syslog(LOG_INFO, "Starting daemon ... ");
+
+            
+    /* Create a new SID for the child process */
+    sid = setsid();
+    if (sid < 0) {
+            /* Log the failure */
+            exit(EXIT_FAILURE);
+    }
+    
+
+    
+    /* Change the current working directory */
+    if ((chdir("/")) < 0) {
+            /* Log the failure */
+            exit(EXIT_FAILURE);
+    }
+
+    /* Ensure only one copy */
+    if(lock_file()) {
+        fprintf(stderr,"Fatal: Cannot get a lock file /var/lock/ochi. Maybe another process is running"); 
+        exit(EXIT_FAILURE);
+    } 
+    /* Close out the standard file descriptors */
+    close(STDIN_FILENO);
+    close(STDOUT_FILENO);
+    close(STDERR_FILENO);
+   
+
+
+    /* Daemon-specific initialization goes here */
+ 
+    /* The Big Loop */
+    while (1) {
+       /* Do some task here ... */
+       process_scans();
+       sleep(10); /* wait 10 seconds */
+    }
+exit(EXIT_SUCCESS);
+
+}
+
+
+
+int lock_file(){
+    int pidFilehandle;
+    char str[10]; 
+    char pidfile[]="/var/lock/ochi";
+
+   pidFilehandle = open(pidfile, O_RDWR|O_CREAT, 0600);
+
+    if (pidFilehandle == -1 ){
+        /* Couldn't open lock file */
+        syslog(LOG_INFO, "Could not open PID lock file %s, exiting", pidfile);
+        return 1;
+    }
+    /* Try to lock file */
+    if (lockf(pidFilehandle,F_TLOCK,0) == -1)
+    {
+        /* Couldn't get lock on lock file */
+        syslog(LOG_INFO, "Could not lock PID lock file %s, exiting", pidfile);
+        return 1;
+    }
+
+    /* Get and format PID */
+    sprintf(str,"%d\n",getpid());
+    /* write pid to lockfile */
+    write(pidFilehandle, str, strlen(str));
+    return 0;
+}
+
+
+
+int process_scans(){
+    PIX *pixs=NULL, *pixd=NULL;
+    int i,j;
+    BAR *barkoda=NULL;
+    SID *vpisna=NULL;
+
+
+    glob_t *flist=list_files();
+
+    i=0;
+    if(flist->gl_pathc==0) {
+        dfprintf(stderr,_("No files in current directory... Exiting...\n"));
+        exit(1);
+    }
+
+/* connect to database */
+	PGconn     *conn;
+    conn = connect_db();
+	if (PQstatus(conn) != CONNECTION_OK) return 1; // if cannot connect 
+
+
+    for(i=0;i<flist->gl_pathc;i++){
+	    dfprintf(stdout,_("file: %s\n"),flist->gl_pathv[i]);
+        pixs=loadimage(flist->gl_pathv[i]);
+        if(pixs==NULL){
+            dfprintf(stderr,_("Pix error... Exiting...\n"));
+            exit(1);
+        }
+        pixd=repair_scanned_image(&pixs);
+        barkoda=getCode (pixd);
+/* If there is no barcode in the expected location that means the scan is
+ * something we expected */
+        if(barkoda==NULL){
+            dfprintf(stdout,_("no barcode\n"));
+            /*try to rotate the image 180deg, to see if it is just incorrectly
+            * scanned */
+            pixDestroy(&pixs);
+            pixDestroy(&pixd);
+            continue;
+        }
+/* This is a hack to correct a glitch in barcodes */
+        if(barkoda->barcode==NULL){
+            barDestroy(&barkoda);
+            dfprintf(stdout,_("Code was not decoded... trying again\n"));
+            barkoda=getCode(pixs);
+        }
+/* SID is only on the first page. Inhibit SID recognition on subsequent pages */
+        if(barkoda->barcode[7]=='0'){
+        vpisna=getSID(pixs);
+        }
+        else
+        {
+        vpisna->sid=malloc((SID_LENGTH+1)*sizeof(char));
+         vpisna->sid="xxxxxxxx";
+        }
+        dfprintf(stdout,_("Barcode number of file is %s.\n"),barkoda->barcode);
+        dfprintf(stdout,_("Student id number of file is %s.\n"),vpisna->sid);
+        dfprintf(stdout,_("Certainty:"));
+        for(j=0;j<SID_LENGTH;j++){
+            printf(" %d",(int)(vpisna->certainty[j]*100));
+        } 
+        dfprintf(stdout,".\n");
+        ANS *answer=getanswer(pixs);
+        
+/* save result file for legacy database insert */
+        writerezfile(pixd, flist->gl_pathv[i], answer, barkoda, vpisna);
+
+/* insert into database */
+        db_insert_wrapper(conn,flist->gl_pathv[i], answer, barkoda, vpisna);
+
+/* destroy all allocated space (hopefully) */
+        ansDestroy(&answer);
+        sidDestroy(&vpisna);
+        barDestroy(&barkoda);
+        pixDestroy(&pixs);
+        pixDestroy(&pixd);
+    }
+
+    close_db(conn); /* close connection to database */
+    globfree(flist);
+    free(flist);
+}
+
+
+/* Print version and copyright information.  */
+void print_version (void) {
+  fprintf (stdout,_("%s version %s\n\n"), PACKAGE, VERSION);
+  
+  fprintf (stdout,_("\
+Copyright (C) %s Samo Penic, Miha Fosnaric, Ales Berkopec\n\
+Published under GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>\n\
+This is free software: you are free to change and redistribute it.\n\
+There is NO WARRANTY, to the extent permitted by law.\n\n\n"),
+              "2008--2011");
+}
+
+
+
+void print_usage (void){
+
+    print_version();
+
+    fprintf(stdout,_("\
+Usage instructions:\n\n\
+-h|-help : printout this text\n\
+-d : daemonize process\n"));
+}
+
 
