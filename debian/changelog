@@ -1,3 +1,22 @@
+ochi (0.01-RC1Maverick-fix5) maverick; urgency=low
+
+  - Fixed minor bug, when daemon exits prematurely, when no files are found in
+    the input directory.
+
+ -- Samo Penic <samo.penic@fe.uni-lj.si>  Thu, 21 Apr 2011 12:51:10 +0200
+
+ochi (0.01-RC1-fix4) lucid; urgency=low
+
+  * Daemonized the whole process
+  * Field called quiet has been renamed into daemon
+  - Added commandline flags -d for daemon -n for no daemon. They override
+    default setting in config file.
+  - Added commandline flag -h and -help for help.
+  - Syslog utility
+  - Basic process lock mechanism is provided
+
+ -- Samo Penic <samo.penic@fe.uni-lj.si>  Tue, 24 Mar 2011 10:40:00 +0100
+
 ochi (0.01-RC1-fix3) lucid; urgency=low
 
   - Fix bad previous fix!

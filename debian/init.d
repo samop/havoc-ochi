@@ -12,7 +12,7 @@
 #
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-DAEMON=/usr/sbin/ochi
+DAEMON=/usr/local/bin/ochi
 NAME=ochi
 DESC=ochi
 
