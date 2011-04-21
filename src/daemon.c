@@ -192,22 +192,29 @@ int process_scans(){
 
     i=0;
     if(flist->gl_pathc==0) {
-        dfprintf(stderr,_("No files in current directory... Exiting...\n"));
-        exit(1);
+//        dfprintf(stderr,_("No files in current directory... Exiting...\n"));
+//        exit(1);
+        return(EXIT_FAILURE);
     }
 
 /* connect to database */
 	PGconn     *conn;
     conn = connect_db();
-	if (PQstatus(conn) != CONNECTION_OK) return 1; // if cannot connect 
-
+	if (PQstatus(conn) != CONNECTION_OK) {
+        globfree(flist);
+        free(flist);
+        return(EXIT_FAILURE); // if cannot connect 
+    }
 
     for(i=0;i<flist->gl_pathc;i++){
 	    dfprintf(stdout,_("file: %s\n"),flist->gl_pathv[i]);
         pixs=loadimage(flist->gl_pathv[i]);
         if(pixs==NULL){
             dfprintf(stderr,_("Pix error... Exiting...\n"));
-            exit(1);
+            close_db(conn); /* close connection to database */
+            globfree(flist);
+            free(flist);
+            return(EXIT_FAILURE);
         }
         pixd=repair_scanned_image(&pixs);
         barkoda=getCode (pixd);
@@ -238,11 +245,11 @@ int process_scans(){
         }
         dfprintf(stdout,_("Barcode number of file is %s.\n"),barkoda->barcode);
         dfprintf(stdout,_("Student id number of file is %s.\n"),vpisna->sid);
-        dfprintf(stdout,_("Certainty:"));
-        for(j=0;j<SID_LENGTH;j++){
-            printf(" %d",(int)(vpisna->certainty[j]*100));
+//        dfprintf(stdout,_("Certainty:"));
+/*        for(j=0;j<SID_LENGTH;j++){
+            dfprintf(stdout," %d",(int)(vpisna->certainty[j]*100));
         } 
-        dfprintf(stdout,".\n");
+        dfprintf(stdout,".\n"); */
         ANS *answer=getanswer(pixs);
         
 /* save result file for legacy database insert */
@@ -262,6 +269,7 @@ int process_scans(){
     close_db(conn); /* close connection to database */
     globfree(flist);
     free(flist);
+    return(EXIT_SUCCESS);
 }
 
 
