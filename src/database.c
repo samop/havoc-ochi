@@ -74,8 +74,13 @@ int db_insert_wrapper(PGconn *conn, char *filename, ANS *ans, BAR *barkoda, SID 
 /*	PGconn     *conn;
     conn = connect_db();
 	if (PQstatus(conn) != CONNECTION_OK) return 1; // if cannot connect 
-  */  
-    if (db_check_serial_validity(conn,barkoda->barcode)==0) { return 1;}
+  */ 
+// Fast fix of problem for inserting second or any subsequent pages to the
+// database and checking is serial is valid. For the future, check if mother_id
+// code is valid and not the code itself. It requires a minor change in
+// db_check_serial_validity.
+ 
+//    if (db_check_serial_validity(conn,barkoda->barcode)==0) { return 1;}
     if (db_check_scan_presence(conn,barkoda->barcode)==1) { return 1;} 
     char *ansarray=ans_array(ans);
     char *picname=picfname(filename);

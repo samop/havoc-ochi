@@ -236,12 +236,17 @@ int process_scans(){
         }
 /* SID is only on the first page. Inhibit SID recognition on subsequent pages */
         if(barkoda->barcode[7]=='0'){
+	//fprintf(stderr," prva stran bul sem tu %s\n", barkoda->barcode);
         vpisna=getSID(pixs);
+
         }
         else
         {
-        vpisna->sid=malloc((SID_LENGTH+1)*sizeof(char));
-         vpisna->sid="xxxxxxxx";
+            /*Ugly, dirty and fix for multiple scan pages */
+	        vpisna=getSID(pixs);
+        	for(j=0;j<SID_LENGTH;j++){
+            		vpisna->certainty[j]=100;
+        	} 
         }
         dfprintf(stdout,_("Barcode number of file is %s.\n"),barkoda->barcode);
         dfprintf(stdout,_("Student id number of file is %s.\n"),vpisna->sid);
@@ -254,7 +259,6 @@ int process_scans(){
         
 /* save result file for legacy database insert */
         writerezfile(pixd, flist->gl_pathv[i], answer, barkoda, vpisna);
-
 /* insert into database */
         db_insert_wrapper(conn,flist->gl_pathv[i], answer, barkoda, vpisna);
 
