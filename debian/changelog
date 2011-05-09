@@ -1,4 +1,12 @@
-ochi (0.01-RC1Maverick-fix5) maverick; urgency=low
+ochi (0.01-RC2) maverick; urgency=low
+
+    * Fixed bug in 2 sided scans. Now they go into the database successfuly but
+      some more fixes will be required in the future. Also, check if the serial
+      number is valid was cancelled.
+
+ -- Samo Penic <samo.penic@fe.uni-lj.si>  Mon, 9 May 2011 18:13:10 +0200
+
+ochi (0.01-RC1-fix5) lucid; urgency=low
 
   - Fixed minor bug, when daemon exits prematurely, when no files are found in
     the input directory.
