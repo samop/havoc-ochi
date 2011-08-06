@@ -27,6 +27,8 @@ char *scan_dir;
 char *debug_dir;
 char *output_dir;
 char *processed_dir;
+char *database_name;
+char *database_user;
 int debug;
 PIX *PIXmark1;
 

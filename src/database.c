@@ -19,6 +19,7 @@
 
 #include<stdlib.h>
 #include<stdio.h>
+#include<string.h>
 #include<leptonica/allheaders.h>
 #include<fcntl.h>
 #include "bar_process.h"
@@ -33,8 +34,12 @@ void close_db(PGconn *conn){
 
 PGconn *connect_db(){
 	PGconn     *conn;
-    const char *conninfo = "dbname = havoc";
+    char *conninfo;
+    conninfo=(char *)malloc(255*sizeof(char));
+    strcpy(conninfo,"dbname = ");
+    strcat(conninfo, database_name);
 	conn = PQconnectdb(conninfo);
+    free(conninfo);
 	if (PQstatus(conn) != CONNECTION_OK)
         {
                 dfprintf(stderr,"Connection to database failed: %s\n",
