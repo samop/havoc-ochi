@@ -199,19 +199,20 @@ int process_scans(){
 
 /* connect to database */
 	PGconn     *conn;
+    if(use_database){
     conn = connect_db();
 	if (PQstatus(conn) != CONNECTION_OK) {
         globfree(flist);
         free(flist);
         return(EXIT_FAILURE); // if cannot connect 
     }
-
+    }
     for(i=0;i<flist->gl_pathc;i++){
 	    dfprintf(stdout,_("file: %s\n"),flist->gl_pathv[i]);
         pixs=loadimage(flist->gl_pathv[i]);
         if(pixs==NULL){
             dfprintf(stderr,_("Pix error... Exiting...\n"));
-            close_db(conn); /* close connection to database */
+            if(use_database) close_db(conn); /* close connection to database */
             globfree(flist);
             free(flist);
             return(EXIT_FAILURE);
@@ -260,7 +261,7 @@ int process_scans(){
 /* save result file for legacy database insert */
         writerezfile(pixd, flist->gl_pathv[i], answer, barkoda, vpisna);
 /* insert into database */
-        db_insert_wrapper(conn,flist->gl_pathv[i], answer, barkoda, vpisna);
+        if(use_database) db_insert_wrapper(conn,flist->gl_pathv[i], answer, barkoda, vpisna);
 
 /* destroy all allocated space (hopefully) */
         ansDestroy(&answer);
@@ -270,7 +271,7 @@ int process_scans(){
         pixDestroy(&pixd);
     }
 
-    close_db(conn); /* close connection to database */
+    if(use_database) close_db(conn); /* close connection to database */
     globfree(flist);
     free(flist);
     return(EXIT_SUCCESS);

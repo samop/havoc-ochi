@@ -30,6 +30,7 @@ char *processed_dir;
 char *database_name;
 char *database_user;
 int debug;
+int use_database;
 PIX *PIXmark1;
 
 glob_t *list_files(void);

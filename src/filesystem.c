@@ -76,6 +76,7 @@ void readconfig(){
         CFG_SIMPLE_STR("database_name",&database_user),
         CFG_SIMPLE_STR("database_user",&database_user),
         CFG_SIMPLE_BOOL("debug",&debug),
+        CFG_SIMPLE_BOOL("use_database",&use_database),
         CFG_SIMPLE_BOOL("daemon",&daemon_flag),
         CFG_END()
     };

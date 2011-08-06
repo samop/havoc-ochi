@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: samo.penic@fe.uni-lj.si\n"
-"POT-Creation-Date: 2011-04-21 13:35+0200\n"
+"POT-Creation-Date: 2011-08-06 19:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -52,24 +53,24 @@ msgstr ""
 msgid "Code was not decoded... trying again\n"
 msgstr ""
 
-#: src/daemon.c:246
+#: src/daemon.c:251
 #, c-format
 msgid "Barcode number of file is %s.\n"
 msgstr ""
 
-#: src/daemon.c:247
+#: src/daemon.c:252
 #, c-format
 msgid "Student id number of file is %s.\n"
 msgstr ""
 
-#: src/daemon.c:278
+#: src/daemon.c:282
 #, c-format
 msgid ""
 "%s version %s\n"
 "\n"
 msgstr ""
 
-#: src/daemon.c:280
+#: src/daemon.c:284
 #, c-format
 msgid ""
 "Copyright (C) %s Samo Penic, Miha Fosnaric, Ales Berkopec\n"
@@ -81,7 +82,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/daemon.c:294
+#: src/daemon.c:298
 #, c-format
 msgid ""
 "Usage instructions:\n"
