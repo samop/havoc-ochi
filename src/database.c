@@ -98,9 +98,9 @@ int db_insert_wrapper(PGconn *conn, char *filename, ANS *ans, BAR *barkoda, SID 
     }
 
     if(mincert<0.85)
-        retval= db_insert_scan(conn, barkoda->barcode, ans->ans_string, "WAR",ansarray,vpisna->sid, picname);
+        retval= db_insert_scan(conn, barkoda->barcode, ans->ans_string, "err",ansarray,vpisna->sid, picname);
     else
-        retval= db_insert_scan(conn, barkoda->barcode, ans->ans_string, "REZ",ansarray,vpisna->sid, picname);
+        retval= db_insert_scan(conn, barkoda->barcode, ans->ans_string, "rez",ansarray,vpisna->sid, picname);
     res= PQexec(conn,"update pola set first_id=T2.pola_id from  pola T2 where pola.first_ser_st=T2.ser_st and pola.first_id is NULL;");
     PQclear(res);
     free(ansarray);
