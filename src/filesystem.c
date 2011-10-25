@@ -66,6 +66,8 @@ void readconfig(){
     char conffile[255];
     sprintf(conffile,"%s/ochi.conf",CONFDIR);
     dfprintf(stdout,_("Config dir in: %s\n"),conffile);
+//    debug_dir=(char *)malloc(1024*sizeof(char));
+//    debug_dir=(char *)malloc(1024*sizeof(char));
 
 
     cfg_opt_t opts[] = {
@@ -73,7 +75,7 @@ void readconfig(){
         CFG_SIMPLE_STR("processed_directory", &processed_dir),
         CFG_SIMPLE_STR("debug_output", &debug_dir),
         CFG_SIMPLE_STR("result_output",&output_dir),
-        CFG_SIMPLE_STR("database_name",&database_user),
+        CFG_SIMPLE_STR("database_name",&database_name),
         CFG_SIMPLE_STR("database_user",&database_user),
         CFG_SIMPLE_BOOL("debug",&debug),
         CFG_SIMPLE_BOOL("use_database",&use_database),

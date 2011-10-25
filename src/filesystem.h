@@ -31,6 +31,7 @@ char *database_name;
 char *database_user;
 int debug;
 int use_database;
+int daemon_flag;
 PIX *PIXmark1;
 
 glob_t *list_files(void);

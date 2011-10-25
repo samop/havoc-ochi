@@ -42,7 +42,7 @@
 #include "../config.h"
 #include "database.h"
 
-int daemon_flag=0;
+//int daemon_flag=0;
 
 
 /* outputs string depending on quiet mode */
