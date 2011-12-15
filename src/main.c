@@ -21,6 +21,7 @@
 #include <leptonica/allheaders.h>
 #include <localization.h>
 #include "daemon.h"
+#include "filesystem.h"
 
 PIX* sidbox(PIX *pixs);
 PIX* locatesid2(PIX *pixs);
@@ -52,7 +53,7 @@ int main(int    argc, char **argv) {
     }
 /* Localization settings */
     set_localization("");
-    test_db_connection();
+    if (use_database) test_db_connection();
     if(daemon_flag)
         daemonize();
     else {
