@@ -8,6 +8,7 @@ AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
 # Checks for programs.
 AC_PROG_CC
+AC_LANG([C])
 AM_GNU_GETTEXT_VERSION([0.16])
 AM_GNU_GETTEXT([external])
 
@@ -31,6 +32,16 @@ AC_SEARCH_LIBS([zbar_image_scanner_create], [zbar],, echo 'Install libzbar-dev';
 AC_SEARCH_LIBS([cfg_init], [confuse],, echo 'Install libconfuse-dev';exit 1)
 AC_SEARCH_LIBS([PQconnectdb],[pq],, echo 'Install libpq-dev';exit 1)
 AC_FUNC_MALLOC
+
+AC_MSG_CHECKING([libleptonica findFileFormat interface])
+AC_LINK_IFELSE(
+  AC_LANG_PROGRAM([[#include <leptonica/allheaders.h>]],
+	[[      int i;
+		findFileFormat("abc",NULL);
+		return 0;]]),
+  [AC_MSG_RESULT([Have to use new libleptonica findFileFormat]);AC_DEFINE([NEWLEPT],[],[Use new leptonica])],
+  [AC_MSG_RESULT([Have to use old libleptonica findFileFormat])]
+)
 
 AC_CONFIG_FILES([Makefile
                 src/Makefile

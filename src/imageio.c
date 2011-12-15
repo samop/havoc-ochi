@@ -19,6 +19,7 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include <leptonica/allheaders.h>
+#include "../config.h"
 #include "imageio.h"
 #include "bar_process.h"
 #include "sid_process.h"
@@ -57,7 +58,11 @@ int fileformat(char *filename){
     int format;
      if ((fp = fopenReadStream(filename)) == NULL)
         return ERROR_INT("image file not found", "fileformat", 1);
+#ifdef NEWLEPT
+	findFileFormat(filename,&format);
+#else
     format=findFileFormat(fp);
+#endif
     fclose(fp);
     return format;
 }
