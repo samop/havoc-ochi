@@ -102,7 +102,24 @@ void decodeSID(SID *sid){
     sid1[SID_LENGTH]=0;
     sid->sid=sid1;
     sid->certainty=cert;
+//if we requested that numerals must me extracted
+	char fname[255];
+	char target_name[255];
+    if(extract_flag==1){
+	for(i=0;i<SID_LENGTH;i++){
+		if(sid->certainty[i] > 0.8){
+			if(i==0 || i==1 || i==4) continue;
+			printf("Saving...\n");
+			//cp /tmp/vpisnaI.png v numerals/I/rand.png
+    			sprintf(fname,"%s/vpisna%d.png",debug_dir,i);
+    			sprintf(target_name,"%s/numerals/%d/vpisna%d.png",debug_dir,sid->sid[i]-'0',(int)(rand()*1000000));
+			printf("Saving (%s -> %s)...\n",fname, target_name);
+			rename(fname, target_name);
+		}
+	}
+    }
     free(num);
+
 }
 
 /* chops and decodes digit by digit of missing sid characters */

@@ -179,8 +179,6 @@ int lock_file(){
     return 0;
 }
 
-
-
 int process_scans(){
     PIX *pixs=NULL, *pixd=NULL;
     int i,j;
@@ -299,7 +297,8 @@ void print_usage (void){
     fprintf(stdout,_("\
 Usage instructions:\n\n\
 -h|-help : printout this text\n\
--d : daemonize process\n"));
+-d : daemonize process\n\
+-e : extract numerals -- you have to create directories /tmp/numerals/X, where X is 0 to 9.\n"));
 }
 
 

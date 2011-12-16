@@ -103,7 +103,7 @@ void readconfig(){
         dfprintf(stderr,"Error, cannot find marker file!\n");
         exit(1);
         }
-
+	extract_flag=0;
     //sprintf(networkfile,"%s/%s",DATADIR,NETWORK_FILE);
 
 

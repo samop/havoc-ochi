@@ -33,7 +33,7 @@ int main(int    argc, char **argv) {
     int c;
 /* Read config file */
     readconfig();
-    while( (c = getopt(argc, argv, "dnh|help")) != -1) {
+    while( (c = getopt(argc, argv, "dnhe|help")) != -1) {
         switch(c){
             case 'h':
                 print_usage();
@@ -45,6 +45,9 @@ int main(int    argc, char **argv) {
             case 'n':
                 daemon_flag = 0;
                 break;
+	    case 'e':
+		extract_flag = 1;
+		break;
             default:
                 print_usage();
                 exit(0);
