@@ -194,10 +194,10 @@ SID *locateSID(PIX *pixs){
     pixclip = clip_image(pixs,pixGetWidth(pixs)*SID_CORNER_X_START, 0, pixGetWidth(pixs)*SID_CORNER_X_END, pixGetHeight(pixs)*SID_CORNER_Y_END);
 
 /* Some basic image morphology to make all id numbers connected */
-    pixt0 = pixMorphCompSequence(pixclip, "c1.8 + c30.1", 0); 
-    pixt1 = pixMorphSequence(pixt0, "o10.1", 0); 
+    pixt0 = pixMorphCompSequence(pixclip, "c20.30 + c30.20", 0); /* changed code 22.12.2011 */
+    pixt1 = pixMorphSequence(pixt0, "o10.1", 0); /* obsolete 22.12.2011 */
 /* list all connected structures in this corner */
-    boxa = pixConnComp(pixt1, NULL, 8); 
+    boxa = pixConnComp(pixt0, NULL, 8); 
 
     nbox = boxaGetCount(boxa);
     mArea=0;
@@ -208,11 +208,12 @@ SID *locateSID(PIX *pixs){
         boxaDestroy(&boxa);
         sid->img=NULL;
         return sid;
-    } 
+    }
+
     for (i = 0; i < nbox; i++) {
         box = boxaGetBox(boxa, i, L_CLONE);
-        /*Find biggest box. This is supporsed to be SID */
-        cArea=box->w*box->h;
+        /*Find highest box. This is supposed to be SID */
+        cArea=box->h;
         
         if(cArea>mArea){
             mArea=cArea;
@@ -223,10 +224,45 @@ SID *locateSID(PIX *pixs){
     }
 
 /* we get the biggest box */
+
     box=boxaGetBox(boxa,boxid,L_CLONE);
 
+	unsigned int leftx, rightx, most_right_id=boxid,temp;
+	BOX *tempbox;
+	PIX *dbg;
+	leftx = rightx = box->x;
+	for(temp = 0; temp < nbox; temp++) {
+		if (temp == boxid) continue;
+		printf("************ Vstop v if\n");	
+		tempbox = boxaGetBox(boxa,temp,L_CLONE);
+		if ((tempbox->h > box->h*0.70) && (tempbox->h < box->h*1.30)){
+			fprintf(stderr,"Bil sem tu" );
+			if (tempbox->x <= leftx) leftx = tempbox->x;
+			else {
+				rightx = tempbox->x;
+				most_right_id = temp;
+			}
+		}
+		boxDestroy(&tempbox);
+	}
+	fprintf(stderr,"Index temp=%d",most_right_id);
+	tempbox = boxaGetBox(boxa,most_right_id,L_CLONE);
+	rightx += tempbox->w;
+	
+	dbg=clip_image(pixclip,tempbox->x,tempbox->y,tempbox->w,tempbox->h);
+	saveimage(dbg,"/tmp/rightmost.png");
+	saveimage(pixt0,"/tmp/clip.png");
+	pixDestroy(&dbg);
+
+	boxDestroy(&tempbox);
+	
+	box->x = leftx;
+	box->w = rightx - leftx;
+		
+
     sid->img=clip_image(pixclip,box->x-SID_INTERSPACE,box->y,box->w+2*SID_INTERSPACE,box->h);
-            
+    saveimage(sid->img, "/tmp/tempimg.png");
+     
 /* Calculate position on image */
 /* We just add some padding in front and in back in sid->x and sid->w*/
             sid->x=x+box->x- SID_INTERSPACE;
