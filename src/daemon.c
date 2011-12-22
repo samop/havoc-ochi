@@ -282,10 +282,11 @@ void print_version (void) {
   
   fprintf (stdout,_("\
 Copyright (C) %s Samo Penic, Miha Fosnaric, Ales Berkopec\n\
+Code contributors: Miha Halas, Dejan Hrovatin\n\
 Published under GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>\n\
 This is free software: you are free to change and redistribute it.\n\
 There is NO WARRANTY, to the extent permitted by law.\n\n\n"),
-              "2008--2011");
+              "2008--2012");
 }
 
 

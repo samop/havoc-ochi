@@ -194,7 +194,7 @@ SID *locateSID(PIX *pixs){
     pixclip = clip_image(pixs,pixGetWidth(pixs)*SID_CORNER_X_START, 0, pixGetWidth(pixs)*SID_CORNER_X_END, pixGetHeight(pixs)*SID_CORNER_Y_END);
 
 /* Some basic image morphology to make all id numbers connected */
-    pixt0 = pixMorphCompSequence(pixclip, "c20.30 + c30.20", 0); /* changed code 22.12.2011 */
+    pixt0 = pixMorphCompSequence(pixclip, "c1.30 + c30.1", 0); /* changed code 22.12.2011 */
     pixt1 = pixMorphSequence(pixt0, "o10.1", 0); /* obsolete 22.12.2011 */
 /* list all connected structures in this corner */
     boxa = pixConnComp(pixt0, NULL, 8); 
@@ -230,15 +230,20 @@ SID *locateSID(PIX *pixs){
 	unsigned int leftx, rightx, most_right_id=boxid,temp;
 	BOX *tempbox;
 	PIX *dbg;
-	leftx = rightx = box->x;
+	leftx = box->x;
+	rightx = box->x;
 	for(temp = 0; temp < nbox; temp++) {
 		if (temp == boxid) continue;
 		printf("************ Vstop v if\n");	
 		tempbox = boxaGetBox(boxa,temp,L_CLONE);
 		if ((tempbox->h > box->h*0.70) && (tempbox->h < box->h*1.30)){
 			fprintf(stderr,"Bil sem tu" );
-			if (tempbox->x <= leftx) leftx = tempbox->x;
-			else {
+			if (tempbox->x <= leftx) {
+				fprintf(stderr,"Leftmost changed... x=%d\n", tempbox->x);
+				leftx = tempbox->x;
+			}
+			else if(tempbox->x >=rightx) {
+				fprintf(stderr,"Rightmost changed... x=%d\n", tempbox->x);
 				rightx = tempbox->x;
 				most_right_id = temp;
 			}
@@ -249,7 +254,7 @@ SID *locateSID(PIX *pixs){
 	tempbox = boxaGetBox(boxa,most_right_id,L_CLONE);
 	rightx += tempbox->w;
 	
-	dbg=clip_image(pixclip,tempbox->x,tempbox->y,tempbox->w,tempbox->h);
+	dbg=clip_image(pixclip,0,tempbox->y,tempbox->x+tempbox->w,tempbox->h);
 	saveimage(dbg,"/tmp/rightmost.png");
 	saveimage(pixt0,"/tmp/clip.png");
 	pixDestroy(&dbg);

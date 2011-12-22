@@ -32,6 +32,7 @@ PIX* locatesid2(PIX *pixs);
 int main(int    argc, char **argv) {
     int c;
 /* Read config file */
+    print_version();
     readconfig();
     while( (c = getopt(argc, argv, "dnhe|help")) != -1) {
         switch(c){
