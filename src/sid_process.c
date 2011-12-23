@@ -36,7 +36,7 @@ SID *getSID(PIX *pixs){
     SID *sid=locateSID(pixs);
     PIX *pixt=pixCopy(NULL,sid->img);
     PIX *pixt2;
-    sidEnhance(sid); /* use Ochi v4 enhancement procedure */
+//TEST  sidEnhance(sid); /* use Ochi v4 enhancement procedure */
     decodeSID(sid);
     /* try another way, only if there is x in SID */
     if(index(sid->sid,'x')!=NULL){
@@ -192,7 +192,11 @@ SID *locateSID(PIX *pixs){
     int nbox,x,y,w,h,i;
 /* extract the right top corner for further inspection (we don't analyze the whole image). */
     pixclip = clip_image(pixs,pixGetWidth(pixs)*SID_CORNER_X_START, 0, pixGetWidth(pixs)*SID_CORNER_X_END, pixGetHeight(pixs)*SID_CORNER_Y_END);
-
+/* BEGIN TEST: to improve SID location */
+	sid->img=pixclip;
+	sidEnhance(sid);
+	pixclip=sid->img;
+/* END TEST */
 /* Some basic image morphology to make all id numbers connected */
     pixt0 = pixMorphCompSequence(pixclip, "c1.30 + c30.1", 0); /* changed code 22.12.2011 */
     pixt1 = pixMorphSequence(pixt0, "o10.1", 0); /* obsolete 22.12.2011 */
