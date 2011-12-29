@@ -217,14 +217,20 @@ int process_scans(){
         }
         pixd=repair_scanned_image(&pixs);
         barkoda=getCode (pixd);
+
+//try rotation for 180 degrees after first unsuccessful getCode()
+	if(barkoda==NULL) {
+		fprintf(stdout,"Unable to find barcode, trying rotation\n");
+		pixRotate180(pixd,pixd); 
+		pixRotate180(pixs,pixs); 
+		barkoda=getCode(pixd);} 
+
 /* If there is no barcode in the expected location that means the scan is
  * something we expected */
         if(barkoda==NULL){
             dfprintf(stdout,_("no barcode\n"));
-            /*try to rotate the image 180deg, to see if it is just incorrectly
-            * scanned */
-            pixDestroy(&pixs);
-            pixDestroy(&pixd);
+	    pixDestroy(&pixd);
+	    pixDestroy(&pixs);
             continue;
         }
 /* This is a hack to correct a glitch in barcodes */
@@ -233,16 +239,17 @@ int process_scans(){
             dfprintf(stdout,_("Code was not decoded... trying again\n"));
             barkoda=getCode(pixs);
         }
+	pixDestroy(&pixs);
 /* SID is only on the first page. Inhibit SID recognition on subsequent pages */
         if(barkoda->barcode[7]=='0'){
 	//fprintf(stderr," prva stran bul sem tu %s\n", barkoda->barcode);
-        vpisna=getSID(pixs);
+        vpisna=getSID(pixd);
 
         }
         else
         {
             /*Ugly, dirty and fix for multiple scan pages */
-	        vpisna=getSID(pixs);
+	      	vpisna = getSID(pixd);
         	for(j=0;j<SID_LENGTH;j++){
             		vpisna->certainty[j]=100;
         	} 
@@ -254,7 +261,7 @@ int process_scans(){
             dfprintf(stdout," %d",(int)(vpisna->certainty[j]*100));
         } 
         dfprintf(stdout,".\n"); */
-        ANS *answer=getanswer(pixs);
+        ANS *answer=getanswer(pixd);
         
 /* save result file for legacy database insert */
         writerezfile(pixd, flist->gl_pathv[i], answer, barkoda, vpisna);
@@ -265,7 +272,6 @@ int process_scans(){
         ansDestroy(&answer);
         sidDestroy(&vpisna);
         barDestroy(&barkoda);
-        pixDestroy(&pixs);
         pixDestroy(&pixd);
     }
 
