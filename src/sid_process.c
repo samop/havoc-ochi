@@ -46,6 +46,7 @@ SID *getSID(PIX *pixs){
         sidOldEnhance(sid);
         decodeMissSID(sid);
         sid->img=pixt2;
+        return sid; //??? Is this correct
     }
     pixDestroy(&pixt);
     return sid;
