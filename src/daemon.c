@@ -249,6 +249,7 @@ int process_scans(){
         else
         {
             /*Ugly, dirty and fix for multiple scan pages */
+            //Not so ugly and dirty anymore! */
 	      	//vpisna = getSID(pixd);
             vpisna=(SID *)malloc(sizeof(SID));
             vpisna->sid=(char *)malloc(2*sizeof(char));
