@@ -249,7 +249,13 @@ int process_scans(){
         else
         {
             /*Ugly, dirty and fix for multiple scan pages */
-	      	vpisna = getSID(pixd);
+	      	//vpisna = getSID(pixd);
+            vpisna=(SID *)malloc(sizeof(SID));
+            vpisna->sid=(char *)malloc(2*sizeof(char));
+            vpisna->sid[0]='x';
+            vpisna->sid[1]='\0';
+            vpisna->img=NULL;
+            vpisna->certainty=(float *)malloc(SID_LENGTH*sizeof(float));
         	for(j=0;j<SID_LENGTH;j++){
             		vpisna->certainty[j]=100;
         	} 

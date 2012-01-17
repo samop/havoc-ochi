@@ -238,23 +238,23 @@ SID *locateSID(PIX *pixs){
 	rightx = box->x;
 	for(temp = 0; temp < nbox; temp++) {
 		if (temp == boxid) continue;
-		printf("************ Vstop v if\n");	
+//		printf("************ Vstop v if\n");	
 		tempbox = boxaGetBox(boxa,temp,L_CLONE);
 		if ((tempbox->h > box->h*0.70) && (tempbox->h < box->h*1.30)){
-			fprintf(stderr,"Bil sem tu" );
+//			fprintf(stderr,"Bil sem tu" );
 			if (tempbox->x <= leftx) {
-				fprintf(stderr,"Leftmost changed... x=%d\n", tempbox->x);
+//				fprintf(stderr,"Leftmost changed... x=%d\n", tempbox->x);
 				leftx = tempbox->x;
 			}
 			else if(tempbox->x >=rightx) {
-				fprintf(stderr,"Rightmost changed... x=%d\n", tempbox->x);
+//				fprintf(stderr,"Rightmost changed... x=%d\n", tempbox->x);
 				rightx = tempbox->x;
 				most_right_id = temp;
 			}
 		}
 		boxDestroy(&tempbox);
 	}
-	fprintf(stderr,"Index temp=%d",most_right_id);
+//	fprintf(stderr,"Index temp=%d",most_right_id);
 	tempbox = boxaGetBox(boxa,most_right_id,L_CLONE);
 	rightx += tempbox->w;
 	
