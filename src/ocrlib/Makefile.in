@@ -34,7 +34,8 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = ochi_train_lwnn$(EXEEXT)
+bin_PROGRAMS = ochi_train_lwnn$(EXEEXT) \
+	ochi_prepare_train_file$(EXEEXT)
 subdir = src/ocrlib
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -47,6 +48,11 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
+am_ochi_prepare_train_file_OBJECTS =  \
+	ochi_prepare_train_file.$(OBJEXT)
+ochi_prepare_train_file_OBJECTS =  \
+	$(am_ochi_prepare_train_file_OBJECTS)
+ochi_prepare_train_file_LDADD = $(LDADD)
 am_ochi_train_lwnn_OBJECTS = network.$(OBJEXT) fileio.$(OBJEXT) \
 	sample.$(OBJEXT) train.$(OBJEXT) ocr_train.$(OBJEXT)
 ochi_train_lwnn_OBJECTS = $(am_ochi_train_lwnn_OBJECTS)
@@ -59,8 +65,10 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(ochi_train_lwnn_SOURCES)
-DIST_SOURCES = $(ochi_train_lwnn_SOURCES)
+SOURCES = $(ochi_prepare_train_file_SOURCES) \
+	$(ochi_train_lwnn_SOURCES)
+DIST_SOURCES = $(ochi_prepare_train_file_SOURCES) \
+	$(ochi_train_lwnn_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -175,6 +183,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+ochi_prepare_train_file_SOURCES = ochi_prepare_train_file.c
 ochi_train_lwnn_SOURCES = network.c fileio.c sample.c train.c ocr_train.c
 all: all-am
 
@@ -247,6 +256,9 @@ uninstall-binPROGRAMS:
 
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
+ochi_prepare_train_file$(EXEEXT): $(ochi_prepare_train_file_OBJECTS) $(ochi_prepare_train_file_DEPENDENCIES) 
+	@rm -f ochi_prepare_train_file$(EXEEXT)
+	$(LINK) $(ochi_prepare_train_file_OBJECTS) $(ochi_prepare_train_file_LDADD) $(LIBS)
 ochi_train_lwnn$(EXEEXT): $(ochi_train_lwnn_OBJECTS) $(ochi_train_lwnn_DEPENDENCIES) 
 	@rm -f ochi_train_lwnn$(EXEEXT)
 	$(LINK) $(ochi_train_lwnn_OBJECTS) $(ochi_train_lwnn_LDADD) $(LIBS)
@@ -259,6 +271,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fileio.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/network.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ochi_prepare_train_file.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ocr_train.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sample.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/train.Po@am__quote@
