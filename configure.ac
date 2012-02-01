@@ -31,6 +31,7 @@ AC_SEARCH_LIBS([pixMorphSequence], [lept],, echo 'Install libleptonica-dev'; exi
 AC_SEARCH_LIBS([zbar_image_scanner_create], [zbar],, echo 'Install libzbar-dev';exit 1)
 AC_SEARCH_LIBS([cfg_init], [confuse],, echo 'Install libconfuse-dev';exit 1)
 AC_SEARCH_LIBS([PQconnectdb],[pq],, echo 'Install libpq-dev';exit 1)
+AC_SEARCH_LIBS([gzgets],[z],, echo 'Install zlib1g-dev'; exit 1)
 AC_FUNC_MALLOC
 
 AC_MSG_CHECKING([libleptonica findFileFormat interface])
