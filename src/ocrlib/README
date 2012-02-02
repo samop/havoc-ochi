@@ -25,9 +25,9 @@ cat  train_file_header.trn train_file.trn > train_file_complete.trn
 gzip train_file_complete_trn
 
 6. run ochi_train_lwnn.
-./ochi_train_lwnn -c test.net trainfile_complete.trn.gz  trainfile_complete.trn.gz
+./ochi_train_lwnn -c test.net trainfile_complete.trn.gz  trainfile_complete.trn.gz -e 0.00005
 
 7. new network is in test.net. rename it in network.net and copy it into
-share/ochi on your system.
+share/havoc on your system.
 
 --- complete ---
