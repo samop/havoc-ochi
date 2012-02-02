@@ -1,0 +1,33 @@
+How to train network:
+
+1. create directories:
+mkdir /tmp/numerals/0
+mkdir /tmp/numerals/1
+mkdir /tmp/numerals/2
+mkdir /tmp/numerals/3
+mkdir /tmp/numerals/4
+mkdir /tmp/numerals/5
+mkdir /tmp/numerals/6
+mkdir /tmp/numerals/7
+mkdir /tmp/numerals/8
+mkdir /tmp/numerals/9
+
+2. run ochi on data using -e parameter.
+ochi -e
+
+3. run ochi_prepare_train_file
+ochi_prepare_train_file
+
+4. merge train_file_header and train_file.
+cat  train_file_header.trn train_file.trn > train_file_complete.trn
+
+5. gzip it.
+gzip train_file_complete_trn
+
+6. run ochi_train_lwnn.
+./ochi_train_lwnn -c test.net trainfile_complete.trn.gz  trainfile_complete.trn.gz
+
+7. new network is in test.net. rename it in network.net and copy it into
+share/ochi on your system.
+
+--- complete ---
