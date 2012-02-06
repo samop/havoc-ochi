@@ -12,10 +12,9 @@
 #
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-DAEMON=/usr/local/bin/ochi
+DAEMON=/usr/bin/ochi
 NAME=ochi
 DESC=ochi
-
 test -x $DAEMON || exit 0
 
 LOGDIR=/var/log/ochi
@@ -81,7 +80,7 @@ force_stop() {
 case "$1" in
   start)
         echo -n "Starting $DESC: "
-        start-stop-daemon --start --quiet --pidfile $PIDFILE \
+        start-stop-daemon --start --quiet --chuid havoc --pidfile $PIDFILE \
             --exec $DAEMON -- $DAEMON_OPTS
         if running ; then
             echo "$NAME."
@@ -91,6 +90,10 @@ case "$1" in
         ;;
   stop)
         echo -n "Stopping $DESC: "
+	if ! running ; then
+		echo "Daemon is not running."
+		exit 0
+	fi
         start-stop-daemon --stop --quiet --pidfile $PIDFILE \
             --exec $DAEMON
         echo "$NAME."

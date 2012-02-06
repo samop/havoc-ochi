@@ -58,7 +58,7 @@
 #define HAVE_UNISTD_H 1
 
 /* Use new leptonica */
-/* #undef NEWLEPT */
+#define NEWLEPT /**/
 
 /* Name of package */
 #define PACKAGE "havoc"

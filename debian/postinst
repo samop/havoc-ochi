@@ -20,12 +20,16 @@ set -e
 
 case "$1" in
     configure)
+	if [ ! -e /home/havoc ]; then 
+		echo "User havoc probably does not exist. Uninstall package, add user and then install it again"
+	else
 	if [ ! -e /home/havoc/input_scans ]; then mkdir /home/havoc/input_scans; fi
 	if [ ! -e /home/havoc/processed_scans ]; then mkdir /home/havoc/processed_scans; fi
 	if [ ! -e /home/havoc/ocr_results ]; then mkdir /home/havoc/ocr_results; fi
 	chown havoc.havoc /home/havoc/input_scans
 	chown havoc.havoc /home/havoc/processed_scans
 	chown havoc.havoc /home/havoc/ocr_results
+	fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
