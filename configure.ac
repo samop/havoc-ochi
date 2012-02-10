@@ -12,6 +12,28 @@ AC_LANG([C])
 AM_GNU_GETTEXT_VERSION([0.16])
 AM_GNU_GETTEXT([external])
 
+# This adds the option of compiling without using the pqsql library,
+AC_ARG_ENABLE(pqsql,
+  [ --disable-pqsql   Disable compilation with pqsql and database access],
+  [case "${enableval}" in
+     yes | no ) WITH_PQSQL="${enableval}" ;;
+     *) AC_MSG_ERROR(bad value ${enableval} for --disable-pqsql) ;;
+   esac],
+  [WITH_PQSQL="yes"]
+)
+
+dnl Make sure we register this option with Automake
+AM_CONDITIONAL([WITH_PQSLQ], [test "x$WITH_PQSQL" = "xyes"])
+
+# Define CTEMPLATE in config.h if we're going to compile against it
+if test "x$WITH_PQSQL" = "xyes"; then
+    AC_DEFINE([PQSQL], [], ["build using pqsql library"])
+    AC_SEARCH_LIBS([PQconnectdb],[pq],, echo 'Install libpq-dev';exit 1)
+    AC_MSG_NOTICE([pqsql will be used, so database is enabled])
+else
+    AC_MSG_NOTICE([pqsql will not be used, so database is disabled])
+fi
+
 # Checks for libraries.
 
 # Checks for header files.
@@ -30,7 +52,6 @@ AC_SEARCH_LIBS([png_create_info_struct],[png],, echo 'Install libpng-dev'; exit
 AC_SEARCH_LIBS([pixMorphSequence], [lept],, echo 'Install libleptonica-dev'; exit 1)
 AC_SEARCH_LIBS([zbar_image_scanner_create], [zbar],, echo 'Install libzbar-dev';exit 1)
 AC_SEARCH_LIBS([cfg_init], [confuse],, echo 'Install libconfuse-dev';exit 1)
-AC_SEARCH_LIBS([PQconnectdb],[pq],, echo 'Install libpq-dev';exit 1)
 AC_SEARCH_LIBS([gzgets],[z],, echo 'Install zlib1g-dev'; exit 1)
 # AC_FUNC_MALLOC
 

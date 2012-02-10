@@ -40,8 +40,9 @@
 #include <localization.h>
 #include "daemon.h"
 #include "../config.h"
+#ifdef PQSQL
 #include "database.h"
-
+#endif
 //int daemon_flag=0;
 
 
@@ -195,6 +196,7 @@ int process_scans(){
         return(EXIT_FAILURE);
     }
 
+#ifdef PQSQL
 /* connect to database */
 	PGconn     *conn;
     if(use_database){
@@ -205,12 +207,15 @@ int process_scans(){
         return(EXIT_FAILURE); // if cannot connect 
     }
     }
+#endif
     for(i=0;i<flist->gl_pathc;i++){
 	    dfprintf(stdout,_("file: %s\n"),flist->gl_pathv[i]);
         pixs=loadimage(flist->gl_pathv[i]);
         if(pixs==NULL){
             dfprintf(stderr,_("Pix error... Exiting...\n"));
+#ifdef PQSQL
             if(use_database) close_db(conn); /* close connection to database */
+#endif
             globfree(flist);
             free(flist);
             return(EXIT_FAILURE);
@@ -273,16 +278,18 @@ int process_scans(){
 /* save result file for legacy database insert */
         writerezfile(pixd, flist->gl_pathv[i], answer, barkoda, vpisna);
 /* insert into database */
+#ifdef PQSQL
         if(use_database) db_insert_wrapper(conn,flist->gl_pathv[i], answer, barkoda, vpisna);
-
+#endif
 /* destroy all allocated space (hopefully) */
         ansDestroy(&answer);
         sidDestroy(&vpisna);
         barDestroy(&barkoda);
         pixDestroy(&pixd);
     }
-
+#ifdef PQSQL
     if(use_database) close_db(conn); /* close connection to database */
+#endif
     globfree(flist);
     free(flist);
     return(EXIT_SUCCESS);

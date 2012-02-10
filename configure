@@ -607,6 +607,8 @@ ac_subst_vars='am__EXEEXT_FALSE
 am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
+WITH_PQSLQ_FALSE
+WITH_PQSLQ_TRUE
 POSUB
 LTLIBINTL
 LIBINTL
@@ -721,6 +723,7 @@ with_gnu_ld
 enable_rpath
 with_libiconv_prefix
 with_libintl_prefix
+enable_pqsql
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1355,6 +1358,7 @@ Optional Features:
   --enable-dependency-tracking   do not reject slow dependency extractors
   --disable-nls           do not use Native Language Support
   --disable-rpath         do not hardcode runtime library paths
+ --disable-pqsql   Disable compilation with pqsql and database access
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -6003,6 +6007,98 @@ $as_echo "#define HAVE_DCGETTEXT 1" >>confdefs.h
 
 
 
+# This adds the option of compiling without using the pqsql library,
+# Check whether --enable-pqsql was given.
+if test "${enable_pqsql+set}" = set; then :
+  enableval=$enable_pqsql; case "${enableval}" in
+     yes | no ) WITH_PQSQL="${enableval}" ;;
+     *) as_fn_error $? "bad value ${enableval} for --disable-pqsql" "$LINENO" 5 ;;
+   esac
+else
+  WITH_PQSQL="yes"
+
+fi
+
+
+ if test "x$WITH_PQSQL" = "xyes"; then
+  WITH_PQSLQ_TRUE=
+  WITH_PQSLQ_FALSE='#'
+else
+  WITH_PQSLQ_TRUE='#'
+  WITH_PQSLQ_FALSE=
+fi
+
+
+# Define CTEMPLATE in config.h if we're going to compile against it
+if test "x$WITH_PQSQL" = "xyes"; then
+
+$as_echo "#define PQSQL /**/" >>confdefs.h
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for library containing PQconnectdb" >&5
+$as_echo_n "checking for library containing PQconnectdb... " >&6; }
+if ${ac_cv_search_PQconnectdb+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_func_search_save_LIBS=$LIBS
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char PQconnectdb ();
+int
+main ()
+{
+return PQconnectdb ();
+  ;
+  return 0;
+}
+_ACEOF
+for ac_lib in '' pq; do
+  if test -z "$ac_lib"; then
+    ac_res="none required"
+  else
+    ac_res=-l$ac_lib
+    LIBS="-l$ac_lib  $ac_func_search_save_LIBS"
+  fi
+  if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_search_PQconnectdb=$ac_res
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext
+  if ${ac_cv_search_PQconnectdb+:} false; then :
+  break
+fi
+done
+if ${ac_cv_search_PQconnectdb+:} false; then :
+
+else
+  ac_cv_search_PQconnectdb=no
+fi
+rm conftest.$ac_ext
+LIBS=$ac_func_search_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_search_PQconnectdb" >&5
+$as_echo "$ac_cv_search_PQconnectdb" >&6; }
+ac_res=$ac_cv_search_PQconnectdb
+if test "$ac_res" != no; then :
+  test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
+
+else
+  echo 'Install libpq-dev';exit 1
+fi
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: pqsql will be used, so database is enabled" >&5
+$as_echo "$as_me: pqsql will be used, so database is enabled" >&6;}
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: pqsql will not be used, so database is disabled" >&5
+$as_echo "$as_me: pqsql will not be used, so database is disabled" >&6;}
+fi
+
 # Checks for libraries.
 
 # Checks for header files.
@@ -6553,64 +6649,6 @@ else
   echo 'Install libconfuse-dev';exit 1
 fi
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for library containing PQconnectdb" >&5
-$as_echo_n "checking for library containing PQconnectdb... " >&6; }
-if ${ac_cv_search_PQconnectdb+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_func_search_save_LIBS=$LIBS
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char PQconnectdb ();
-int
-main ()
-{
-return PQconnectdb ();
-  ;
-  return 0;
-}
-_ACEOF
-for ac_lib in '' pq; do
-  if test -z "$ac_lib"; then
-    ac_res="none required"
-  else
-    ac_res=-l$ac_lib
-    LIBS="-l$ac_lib  $ac_func_search_save_LIBS"
-  fi
-  if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_search_PQconnectdb=$ac_res
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext
-  if ${ac_cv_search_PQconnectdb+:} false; then :
-  break
-fi
-done
-if ${ac_cv_search_PQconnectdb+:} false; then :
-
-else
-  ac_cv_search_PQconnectdb=no
-fi
-rm conftest.$ac_ext
-LIBS=$ac_func_search_save_LIBS
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_search_PQconnectdb" >&5
-$as_echo "$ac_cv_search_PQconnectdb" >&6; }
-ac_res=$ac_cv_search_PQconnectdb
-if test "$ac_res" != no; then :
-  test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
-
-else
-  echo 'Install libpq-dev';exit 1
-fi
-
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for library containing gzgets" >&5
 $as_echo_n "checking for library containing gzgets... " >&6; }
 if ${ac_cv_search_gzgets+:} false; then :
@@ -6824,6 +6862,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${am__fastdepCC_TRUE}" && test -z "${am__fastdepCC_FALSE}"; then
   as_fn_error $? "conditional \"am__fastdepCC\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${WITH_PQSLQ_TRUE}" && test -z "${WITH_PQSLQ_FALSE}"; then
+  as_fn_error $? "conditional \"WITH_PQSLQ\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 

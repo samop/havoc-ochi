@@ -16,6 +16,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
+#ifdef PQSQL
 
 #include<stdlib.h>
 #include<stdio.h>
@@ -217,3 +218,4 @@ Oid db_insert_blob(PGconn *conn, char *filename){
     return blobId;
 }
 
+#endif

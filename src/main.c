@@ -57,7 +57,9 @@ int main(int    argc, char **argv) {
     }
 /* Localization settings */
     set_localization("");
+#ifdef PQSQL
     if (use_database) test_db_connection();
+#endif
     if(daemon_flag)
         daemonize();
     else {
