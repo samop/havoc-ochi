@@ -37,7 +37,7 @@ host_triplet = @host@
 bin_PROGRAMS = ochi_train_lwnn$(EXEEXT) \
 	ochi_prepare_train_file$(EXEEXT)
 subdir = src/ocrlib
-DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
+DIST_COMMON = README $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \

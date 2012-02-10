@@ -137,7 +137,7 @@ int writerezfile(PIX *pixs,char *source_fname,ANS *ans, BAR *bar, SID *sid){
 
 char *ans_array(ANS *ans){
     int i;
-    char *str=malloc(10000*sizeof(str));
+    char *str=malloc(10000*sizeof(char));
     sprintf(str,"x=array(");
     for(i=0;i<ans->up->n-1;i++){
         sprintf(str,"%s%f,",str,ans->up->mark[i].x);
