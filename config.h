@@ -78,7 +78,7 @@
 #define PACKAGE_VERSION "0.2"
 
 /* "build using pqsql library" */
-/* #undef PQSQL */
+#define PQSQL /**/
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
