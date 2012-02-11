@@ -62,13 +62,13 @@ void test_db_connection(){
 	conn = connect_db();
 	if (PQstatus(conn) != CONNECTION_OK)
         {
-                dfprintf(stderr,"Connection to database failed: %s\n",
+                fprintf(stderr,"Connection to database failed: %s\n",
                         PQerrorMessage(conn));
                 close_db(conn);
                 exit(1);
         }
     else {
-        dfprintf(stderr,"Connection to database successful!\n");
+        fprintf(stderr,"Connection to database successful!\n");
     }
 
     close_db(conn);
