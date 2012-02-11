@@ -319,6 +319,7 @@ void print_usage (void){
 Usage instructions:\n\n\
 -h|-help : printout this text\n\
 -d : daemonize process\n\
+-n : don't daemonize process\n\
 -e : extract numerals -- you have to create directories /tmp/numerals/X, where X is 0 to 9.\n"));
 }
 
