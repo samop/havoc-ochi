@@ -134,6 +134,26 @@ int writerezfile(PIX *pixs,char *source_fname,ANS *ans, BAR *bar, SID *sid){
     return 0;
 }
 
+int moveFileToQuarantine(char *source_fname){
+    char fname[1024];
+//    char picfname[1024];
+    char *base=calloc(1024,sizeof(char));
+    char *ridx=rindex(source_fname,'.');
+    char *ansarray;
+    base=strncpy(base, source_fname,ridx-source_fname);
+    char *picname=rindex(base,'/');
+    if(picname==NULL) picname=base;
+
+ sprintf(fname,"%s/%s.tif",quarantine_dir,picname);
+    int retval=rename(source_fname, fname);
+    if(retval<0){
+    dfprintf(stderr,"rename not successful!\n");
+	return 1;
+    }
+
+	return 0;
+
+}
 
 char *ans_array(ANS *ans){
     int i;

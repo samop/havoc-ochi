@@ -241,10 +241,25 @@ int process_scans(){
 /* This is a hack to correct a glitch in barcodes */
         if(barkoda->barcode==NULL){
             barDestroy(&barkoda);
+		barkoda=NULL;
             dfprintf(stdout,_("Code was not decoded... trying again\n"));
             barkoda=getCode(pixs);
         }
 	pixDestroy(&pixs);
+/* If there is no barcode, move the file to another location and abort this page analysis. */
+ 	if(barkoda->barcode==NULL){
+		barDestroy(&barkoda);
+		int retval=moveFileToQuarantine(flist->gl_pathv[i]);
+		if(retval==1) {
+			dfprintf(stdout,_("Error -- Barcode was not decoded and file couldn't be moved to quarantine directory! Remove file %s manually.\n"),flist->gl_pathv[i]);
+			exit(EXIT_FAILURE);
+		}
+		else {
+			pixDestroy(&pixd);
+			continue;
+		}
+		
+	}
 /* SID is only on the first page. Inhibit SID recognition on subsequent pages */
         if(barkoda->barcode[7]=='0'){
 	//fprintf(stderr," prva stran bul sem tu %s\n", barkoda->barcode);

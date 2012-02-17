@@ -29,6 +29,7 @@ int saveimage(PIX *pixd, char *fileout);
 PIX *loadimage(char *filename);
 int fileformat(char *filename);
 int writerezfile(PIX *pixs,char *source_fname,ANS *ans, BAR *bar, SID *sid);
+int moveFileToQuarantine(char *source_fname);
 char *ans_array(ANS *ans);
 char *picfname(char *source_fname);
 #endif

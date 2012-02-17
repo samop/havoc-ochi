@@ -73,6 +73,7 @@ void readconfig(){
     cfg_opt_t opts[] = {
         CFG_SIMPLE_STR("scan_directory", &scan_dir),
         CFG_SIMPLE_STR("processed_directory", &processed_dir),
+	CFG_SIMPLE_STR("quarantine_directory", &quarantine_dir),
         CFG_SIMPLE_STR("debug_output", &debug_dir),
         CFG_SIMPLE_STR("result_output",&output_dir),
         CFG_SIMPLE_STR("database_name",&database_name),

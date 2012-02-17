@@ -47,7 +47,8 @@ BAR *getCode(PIX *pixs){
         //pixRotate180(code->img,code->img);
         code->img=pixMorphSequence(temp, "d1.1", 0); 
         pixDestroy(&temp);
-        decodeCode(code);         
+        decodeCode(code);
+	if (code==NULL) return NULL;         
     }
     return code; 
 }
