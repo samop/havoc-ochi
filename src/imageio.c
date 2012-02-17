@@ -146,6 +146,9 @@ int moveFileToQuarantine(char *source_fname){
 
  sprintf(fname,"%s/%s.tif",quarantine_dir,picname);
     int retval=rename(source_fname, fname);
+
+	free(base);
+
     if(retval<0){
     dfprintf(stderr,"rename not successful!\n");
 	return 1;
