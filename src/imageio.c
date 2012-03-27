@@ -89,10 +89,12 @@ int writerezfile(PIX *pixs,char *source_fname,ANS *ans, BAR *bar, SID *sid){
     char fname[1024];
     char picfname[1024];
     char *base=calloc(1024,sizeof(char));
+//    char *ending=calloc(25,sizeof(char));
     char *ridx=rindex(source_fname,'.');
     char *ansarray;
  
     base=strncpy(base, source_fname,ridx-source_fname);
+
     char *picname=rindex(base,'/');
     if(picname==NULL) picname=base;
     mincert=100.0;
@@ -138,7 +140,7 @@ int writerezfile(PIX *pixs,char *source_fname,ANS *ans, BAR *bar, SID *sid){
     saveimage(pixd,picfname);
     pixDestroy(&pixd);
 
-    sprintf(fname,"%s/%s.tif",processed_dir,picname);
+    sprintf(fname,"%s/%s.%s",processed_dir,picname,ridx+1);
     int retval=rename(source_fname, fname);
     if(retval<0){
     dfprintf(stderr,"rename not successful!\n");
@@ -159,7 +161,8 @@ int moveFileToQuarantine(char *source_fname){
     char *picname=rindex(base,'/');
     if(picname==NULL) picname=base;
 
- sprintf(fname,"%s/%s.tif",quarantine_dir,picname);
+ //sprintf(fname,"%s/%s.tif",quarantine_dir,picname);
+    sprintf(fname,"%s/%s.%s",processed_dir,picname,ridx+1);
     int retval=rename(source_fname, fname);
 
 	free(base);
