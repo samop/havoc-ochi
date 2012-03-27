@@ -30,9 +30,12 @@ glob_t *list_files(void)
 {
     int retval;
     char path[1024];
+    char path1[1024];
     sprintf(path,"%s/*.tif", scan_dir);
+    sprintf(path,"%s/*.jpg", scan_dir);
     glob_t *data=(glob_t *)malloc(sizeof(glob_t));
     retval= glob(path, 0, NULL, data );
+    retval= glob(path1, GLOB_APPEND, NULL, data );
 /*    switch( retval )
     {
         case 0:

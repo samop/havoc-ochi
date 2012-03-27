@@ -36,7 +36,7 @@ int saveimage(PIX *pixd, char *fileout){
 /* load PNG, TIFF, JPG, GIF or BMP to PIX datastructure. The actual supported
  * formats depends on how the leptonica was compiled */
 PIX *loadimage(char *filename){
-    PIX *pix;
+    PIX *pix, *pixt;
     int format, bpp;
     format=fileformat(filename);
         // In later versions of leptonica you will have to do this 
@@ -49,6 +49,21 @@ IFF_GIF && format!=7 && format!=8){
     if ((pix = pixRead(filename)) == NULL) return NULL;
 
 /* TODO: convert image to 1-bpp 300dpi regardless of scan */
+	bpp=pixGetDepth(pix);
+	if(bpp>1){
+	/*
+		printf("Bits per pixel=%i",bpp);
+		exit(1); */
+		//pixThresholdForFgBg(pix,5,100,NULL,NULL);
+		//pixContrastTRC(pix, pix, 1000);
+		pixt = pixContrastNorm(NULL, pix, 10, 10, 40, 2, 2);
+		pixDestroy(&pix);
+		pix = pixGammaTRC(NULL, pixt, 1.5, 50, 235);
+		pixt=pixThresholdToBinary(pix, 200);
+		//pixt=pixThreshold8(pix,1,1,0);
+		pixDestroy(&pix);
+		pix=pixt;
+	}
    return pix; 
 }
 
