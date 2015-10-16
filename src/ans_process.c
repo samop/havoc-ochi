@@ -168,7 +168,7 @@ ANS_MARK *locaterightmarker(PIX *pixs){
 int locate(PIX *pixwhole, int sx,int sy, int ex, int ey, PIX *pixm, ANS_MARK *mark){
     PIX *pixs=clip_image(pixwhole,sx,sy,ex,ey);
     /* settings for pixGenerateSelWithRuns */
-    l_int32  NumHorLines = 11;
+    l_int32  NumHorLines = 8;
     l_int32  NumVertLines = 8;
     l_int32  MinRunlength = 1;
     l_uint32  HitColor = 0xff880000;
