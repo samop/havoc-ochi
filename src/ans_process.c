@@ -152,7 +152,7 @@ ANS_MARK *locaterightmarker(PIX *pixs){
     int i;
     ANS_MARK *mark_right=calloc(1,sizeof(ANS_MARK));
     /* use just a part of image, where markers are expected */
-    locate(pixs,pixGetWidth(pixs)*9/10, 0,pixGetWidth(pixs)/10, pixGetHeight(pixs),PIXmark1,mark_right);
+    locate(pixs,pixGetWidth(pixs)*92/100, 0,pixGetWidth(pixs)*8/100, pixGetHeight(pixs),PIXmark1,mark_right);
     dfprintf(stdout,_("RIGHT: Found %i markers:\n"),mark_right->n);    
     for(i=0;i<mark_right->n;i++){
         dfprintf(stdout,_("location %f, %f, %f, %f\n"), mark_right->mark[i].x,
@@ -180,6 +180,7 @@ int locate(PIX *pixwhole, int sx,int sy, int ex, int ey, PIX *pixm, ANS_MARK *ma
     SEL         *sel, *sel_2h;
     PIX *pixt2, *pixpe, *pixhmt;
     PIX *pixt3;
+    PIX *pixs1;
     int oldn;
     w = pixGetWidth(pixwhole);
     h = pixGetHeight(pixwhole);
@@ -191,8 +192,15 @@ int locate(PIX *pixwhole, int sx,int sy, int ex, int ey, PIX *pixm, ANS_MARK *ma
     sel = pixGenerateSelWithRuns(pixm, NumHorLines, NumVertLines, 0,
                                 MinRunlength, 7, 7, 0, 0, &pixpe);
 
+saveimage(pixs,"/tmp/dbg-square-0.png");
+/* TODO: 21.3.2016. Added closing operation to make squares more full in case of toner failure
+	Need to test the values of closing if something goes wrong.
+*/
+    pixs1 = pixMorphCompSequence(pixs, "c7.7", 0);
+    saveimage(pixs1,"/tmp/dbg-square-1.png");
 
-    pixhmt = pixHMT(NULL, pixs, sel);
+    pixhmt = pixHMT(NULL, pixs1, sel);
+
     /* small erosion to remove noise; typically not necessary if
      * there are enough elements in the Sel */
     sel_2h = selCreateBrick(1, 2, 0, 0, SEL_HIT);
@@ -224,6 +232,7 @@ int locate(PIX *pixwhole, int sx,int sy, int ex, int ey, PIX *pixm, ANS_MARK *ma
     selDestroy(&sel_2h);
     boxaDestroy(&boxa1);
     pixDestroy(&pixs);
+    pixDestroy(&pixs1);
     return n;
 }
 
