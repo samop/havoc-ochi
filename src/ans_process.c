@@ -196,7 +196,7 @@ saveimage(pixs,"/tmp/dbg-square-0.png");
 /* TODO: 21.3.2016. Added closing operation to make squares more full in case of toner failure
 	Need to test the values of closing if something goes wrong.
 */
-    pixs1 = pixMorphCompSequence(pixs, "c7.7", 0);
+    pixs1 = pixMorphCompSequence(pixs, "c5.5", 0);
     saveimage(pixs1,"/tmp/dbg-square-1.png");
 
     pixhmt = pixHMT(NULL, pixs1, sel);
