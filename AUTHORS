@@ -1,6 +1,3 @@
 Authors of Ochi, an optical recognition backend of HAVoC.
 
-Ochi was written primarily by Samo Penic.
-
-Miha Fosnaric and Ales Berkopec made the code bearable.
-
+Ochi was written by Samo Penic. Miha Fosnaric and Ales Berkopec made the code bearable. After 6 years of inactivity, code got some major update in recognition of student ids. Code for new neural network was written and trained by Rok Sikonja.
