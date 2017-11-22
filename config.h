@@ -5,11 +5,11 @@
    language is requested. */
 #define ENABLE_NLS 1
 
-/* Define to 1 if you have the MacOS X function CFLocaleCopyCurrent in the
+/* Define to 1 if you have the Mac OS X function CFLocaleCopyCurrent in the
    CoreFoundation framework. */
 /* #undef HAVE_CFLOCALECOPYCURRENT */
 
-/* Define to 1 if you have the MacOS X function CFPreferencesCopyAppValue in
+/* Define to 1 if you have the Mac OS X function CFPreferencesCopyAppValue in
    the CoreFoundation framework. */
 /* #undef HAVE_CFPREFERENCESCOPYAPPVALUE */
 
@@ -28,6 +28,12 @@
 
 /* Define to 1 if you have the <leptonica/allheaders.h> header file. */
 #define HAVE_LEPTONICA_ALLHEADERS_H 1
+
+/* Define to 1 if you have the `gsl' library (-lgsl). */
+#define HAVE_LIBGSL 1
+
+/* Define to 1 if you have the `gslcblas' library (-lgslcblas). */
+#define HAVE_LIBGSLCBLAS 1
 
 /* Define to 1 if you have the <memory.h> header file. */
 #define HAVE_MEMORY_H 1
@@ -78,7 +84,7 @@
 #define PACKAGE_VERSION "0.2"
 
 /* "build using pqsql library" */
-#define PQSQL /**/
+/* #undef PQSQL */
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1

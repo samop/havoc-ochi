@@ -29,6 +29,7 @@
 #include "filesystem.h"
 #include "daemon.h"
 #include "localization.h"
+#include "nnrok.h" 
 
 /* a wrapper script to collect all functions in this file to get student id
  * number in a string and returned in a data structure */
@@ -138,9 +139,35 @@ void decodeMissSID(SID *sid){
     free(num);
 }
 
+
+/* Runs Rok's neural network recognition */
+char get_sid_from_character_array(char *cdata, float *certain){
+	char th1fn[1024], th2fn[1024];
+	sprintf(th1fn,"%s/%s",DATADIR,THETA1_FNAME);
+	sprintf(th2fn,"%s/%s",DATADIR,THETA2_FNAME);
+	gsl_matrix_float *th1=read_theta(th1fn,40,1025);
+	gsl_matrix_float *th2=read_theta(th2fn,10,41);
+	gsl_vector *v=gsl_vector_alloc(1024);
+	for(int i=0;i<1024;i++){
+		if(cdata[i]>0)
+			gsl_vector_set(v,i,0.0);
+		else
+			gsl_vector_set(v,i,1.0);
+	
+	//	gsl_vector_set(v,i,cdata[i]);
+	}
+
+	char result=predict(th1,th2,v, certain)+1;
+	if (result==10) result=0;
+	gsl_matrix_float_free(th1);
+	gsl_matrix_float_free(th2);
+	gsl_vector_free(v);
+	return result;
+}
+
 /* Runs lwneuralnet recognition. Functions that are used are actually from that
- * project. */
-char get_sid_from_character_array(char cdata[32][32], float *certain){
+ * project. Can be used instead of Rok's NN above. Just rename both functions. */ 
+char get_sid_from_character_array2(char cdata[32][32], float *certain){
     network_t *net;
     char filename[1024];
     float output[10], max;

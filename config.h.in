@@ -4,11 +4,11 @@
    language is requested. */
 #undef ENABLE_NLS
 
-/* Define to 1 if you have the MacOS X function CFLocaleCopyCurrent in the
+/* Define to 1 if you have the Mac OS X function CFLocaleCopyCurrent in the
    CoreFoundation framework. */
 #undef HAVE_CFLOCALECOPYCURRENT
 
-/* Define to 1 if you have the MacOS X function CFPreferencesCopyAppValue in
+/* Define to 1 if you have the Mac OS X function CFPreferencesCopyAppValue in
    the CoreFoundation framework. */
 #undef HAVE_CFPREFERENCESCOPYAPPVALUE
 
@@ -27,6 +27,12 @@
 
 /* Define to 1 if you have the <leptonica/allheaders.h> header file. */
 #undef HAVE_LEPTONICA_ALLHEADERS_H
+
+/* Define to 1 if you have the `gsl' library (-lgsl). */
+#undef HAVE_LIBGSL
+
+/* Define to 1 if you have the `gslcblas' library (-lgslcblas). */
+#undef HAVE_LIBGSLCBLAS
 
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H

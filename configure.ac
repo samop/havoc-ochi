@@ -53,17 +53,22 @@ AC_SEARCH_LIBS([pixMorphSequence], [lept],, echo 'Install libleptonica-dev'; exi
 AC_SEARCH_LIBS([zbar_image_scanner_create], [zbar],, echo 'Install libzbar-dev';exit 1)
 AC_SEARCH_LIBS([cfg_init], [confuse],, echo 'Install libconfuse-dev';exit 1)
 AC_SEARCH_LIBS([gzgets],[z],, echo 'Install zlib1g-dev'; exit 1)
+AC_CHECK_LIB([gslcblas],[cblas_dgemm])
+AC_CHECK_LIB([gsl],[gsl_blas_dgemm])
 # AC_FUNC_MALLOC
 
-AC_MSG_CHECKING([libleptonica findFileFormat interface])
-AC_LINK_IFELSE(
-  AC_LANG_PROGRAM([[#include <leptonica/allheaders.h>]],
-	[[      int i;
-		findFileFormat("abc",NULL);
-		return 0;]]),
-  [AC_MSG_RESULT([Have to use new libleptonica findFileFormat]);AC_DEFINE([NEWLEPT],[],[Use new leptonica])],
-  [AC_MSG_RESULT([Have to use old libleptonica findFileFormat])]
-)
+#AC_MSG_CHECKING([libleptonica findFileFormat interface])
+#AC_LINK_IFELSE(
+#  AC_LANG_PROGRAM([[#include <leptonica/allheaders.h>]],
+#	[[      int i;
+#		findFileFormat("abc",NULL);
+#		return 0;]]),
+#  [AC_MSG_RESULT([Have to use new libleptonica findFileFormat]);AC_DEFINE([NEWLEPT],[],[Use new leptonica])],
+#  [AC_MSG_RESULT([Have to use old libleptonica findFileFormat])]
+#)
+
+#Old leptopnica library is deprecated in tests (preprocessor tests still exist in code
+AC_DEFINE([NEWLEPT],[],[Use new leptonica])]
 
 AC_CONFIG_FILES([Makefile
                 src/Makefile
