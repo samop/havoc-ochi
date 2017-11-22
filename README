@@ -27,7 +27,8 @@ Then set locale: export LC_ALL=sl_SI.utf8
 and run the program.
 -----
 
-Copyright (C) 2011 Samo Penic, Miha Fosnaric, Ales Berkopec.
+Copyright (C) 2011 Samo Penic, Miha Fosnaric, Ales Berkopec. New neural 
+network added in 2017 by Rok Sikonja.
 
 This file is part of Ochi, the optical recognition backend of HAvOc.
 
