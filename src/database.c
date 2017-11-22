@@ -99,7 +99,7 @@ int db_insert_wrapper(PGconn *conn, char *filename, ANS *ans, BAR *barkoda, SID 
         }
     }
 
-    if(mincert<0.85)
+    if(mincert<SID_MIN_CERTAINTY)
         retval= db_insert_scan(conn, barkoda->barcode, ans->ans_string, "err",ansarray,vpisna->sid, picname);
     else
         retval= db_insert_scan(conn, barkoda->barcode, ans->ans_string, "rez",ansarray,vpisna->sid, picname);

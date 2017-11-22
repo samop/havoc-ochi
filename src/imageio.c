@@ -106,7 +106,7 @@ int writerezfile(PIX *pixs,char *source_fname,ANS *ans, BAR *bar, SID *sid){
 
     if(bar->barcode==NULL)
         sprintf(fname,"%s/%s.err",output_dir,picname);
-    else if(mincert<0.85)
+    else if(mincert<SID_MIN_CERTAINTY)
         sprintf(fname,"%s/%s.war",output_dir,picname);
     else
         sprintf(fname,"%s/%s.rez",output_dir,picname);

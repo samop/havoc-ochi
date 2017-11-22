@@ -28,6 +28,8 @@
 #define SID_CORNER_X_START 4/6
 #define SID_CORNER_X_END 2/6
 #define SID_CORNER_Y_END 1/11
+//#define SID_MIN_CERTAINTY 0.85 // was used until Rok's network (to the date 20.11.2017)
+#define SID_MIN_CERTAINTY 0.7 // changed after the date 20.11.2017!
 
 typedef struct {
     /*corrected image of Student ID*/

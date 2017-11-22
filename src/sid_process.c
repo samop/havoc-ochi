@@ -159,6 +159,7 @@ char get_sid_from_character_array(char *cdata, float *certain){
 
 	char result=predict(th1,th2,v, certain)+1;
 	if (result==10) result=0;
+//	if (*certain<0.3) result=-1;
 	gsl_matrix_float_free(th1);
 	gsl_matrix_float_free(th2);
 	gsl_vector_free(v);
